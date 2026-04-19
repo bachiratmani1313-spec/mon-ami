@@ -3,698 +3,1171 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mon Compagnon 2030</title>
+<title>Mon Compagnon 2030 — Apprends ta prière</title>
+<meta name="description" content="L'application islamique qui t'accompagne pas à pas dans ta prière. Audio-guidée, interactive, disponible partout.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --indigo:#5B5BD6;--indigo-light:#7B7BF0;--emerald:#10C98F;
-  --glass-bg:rgba(255,255,255,0.06);--glass-card:rgba(255,255,255,0.10);
-  --glass-border:rgba(255,255,255,0.18);--glass-hover:rgba(255,255,255,0.28);
-  --text-bright:#F0F2FF;--text-muted:rgba(240,242,255,0.62);--text-dim:rgba(240,242,255,0.35);
-  --deep-bg:#0A0B1A;
+  --indigo:#5B5BD6;--indigo-l:#7B7BF0;
+  --emerald:#10C98F;--emerald-l:#34D9A5;
+  --amber:#F59E0B;--rose:#F43F5E;
+  --glass:rgba(255,255,255,0.07);--glass-card:rgba(255,255,255,0.11);
+  --border:rgba(255,255,255,0.18);--border-h:rgba(255,255,255,0.3);
+  --txt:#F0F2FF;--txt-m:rgba(240,242,255,0.62);--txt-d:rgba(240,242,255,0.32);
+  --bg:#09091A;--bg2:#0D0E22;
 }
-body{font-family:'Sora',sans-serif;background:var(--deep-bg);color:var(--text-bright);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 .arabic{font-family:'Noto Naskh Arabic',serif;direction:rtl}
 
-/* Orbes */
-.orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
-.orb1{width:500px;height:500px;background:rgba(91,91,214,0.3);top:-100px;left:-100px}
-.orb2{width:400px;height:400px;background:rgba(16,201,143,0.2);bottom:-80px;right:-80px}
-.orb3{width:300px;height:300px;background:rgba(91,91,214,0.15);top:50%;left:50%;transform:translate(-50%,-50%)}
+/* ── Orbes ── */
+.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;transition:all 1s ease}
+.o1{width:600px;height:600px;background:rgba(91,91,214,0.25);top:-150px;left:-100px}
+.o2{width:500px;height:500px;background:rgba(16,201,143,0.18);bottom:-100px;right:-100px}
+.o3{width:350px;height:350px;background:rgba(91,91,214,0.12);top:40%;left:40%;transform:translate(-50%,-50%)}
 
-/* Nav */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:.5px solid var(--glass-border);background:rgba(10,11,26,0.7);backdrop-filter:blur(20px)}
-.brand{display:flex;align-items:center;gap:10px;cursor:pointer}
-.brand-icon{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--indigo),var(--emerald));display:flex;align-items:center;justify-content:center;font-size:16px}
-.brand-name{font-size:14px;font-weight:600;line-height:1.1}
-.brand-year{font-size:9px;color:var(--emerald);letter-spacing:3px}
-.nav-tabs{display:flex;gap:3px}
-.nav-tab{padding:6px 14px;border-radius:20px;font-size:11px;color:var(--text-muted);cursor:pointer;border:none;background:transparent;font-family:'Sora',sans-serif;transition:all .25s}
-.nav-tab:hover{color:var(--text-bright);background:var(--glass-bg)}
-.nav-tab.active{color:var(--text-bright);background:var(--glass-card);border:.5px solid var(--glass-border)}
+/* ── Nav ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,40px);border-bottom:.5px solid var(--border);background:rgba(9,9,26,0.75);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
+.brand-ico{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--indigo),var(--emerald));display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.brand-n{font-size:13px;font-weight:600;color:var(--txt)}
+.brand-y{font-size:9px;color:var(--emerald);letter-spacing:3px}
+.nav-r{display:flex;align-items:center;gap:8px}
+.cta-nav{padding:8px 18px;border-radius:20px;border:none;background:linear-gradient(135deg,var(--indigo),var(--indigo-l));color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s;letter-spacing:.3px}
+.cta-nav:hover{transform:scale(1.04);box-shadow:0 4px 20px rgba(91,91,214,.5)}
+.menu-btn{padding:6px 14px;border-radius:16px;border:.5px solid var(--border);background:var(--glass);color:var(--txt-m);font-size:11px;cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s}
+.menu-btn:hover{color:var(--txt);border-color:var(--border-h)}
 
-/* Layout */
-main{position:relative;z-index:10;padding:88px 24px 100px;max-width:960px;margin:0 auto}
-
-/* Pages */
-.page{display:none;animation:fadeUp .5s ease forwards}
+/* ── Layout ── */
+main{position:relative;z-index:10;padding:80px clamp(16px,4vw,40px) 120px;max-width:1000px;margin:0 auto}
+.page{display:none;animation:fu .5s ease forwards}
 .page.active{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
-/* Cards */
-.glass-card{background:var(--glass-card);border:.5px solid var(--glass-border);border-radius:24px;transition:all .35s cubic-bezier(.25,.46,.45,.94)}
-.glass-card:hover{border-color:var(--glass-hover)}
-.glass-btn{background:var(--glass-bg);border:.5px solid var(--glass-border);border-radius:20px;padding:8px 16px;font-size:12px;color:var(--text-muted);cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s}
-.glass-btn:hover{color:var(--text-bright);border-color:var(--glass-hover);background:var(--glass-card)}
-.accent-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--emerald)}
-.section-label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-dim)}
-.gradient-text{background:linear-gradient(90deg,#fff,var(--indigo) 55%,var(--emerald) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* ── UI Components ── */
+.glass-card{background:var(--glass-card);border:.5px solid var(--border);border-radius:24px;transition:all .35s cubic-bezier(.25,.46,.45,.94)}
+.glass-card:hover{border-color:var(--border-h);transform:translateY(-2px)}
+.g-btn{background:var(--glass);border:.5px solid var(--border);border-radius:20px;padding:9px 18px;font-size:12px;color:var(--txt-m);cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s}
+.g-btn:hover{color:var(--txt);border-color:var(--border-h);background:var(--glass-card)}
+.acc{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--emerald)}
+.sec{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt-d)}
+.gtxt{background:linear-gradient(90deg,#fff 0%,var(--indigo-l) 50%,var(--emerald) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:10px;padding:4px 11px;border-radius:12px;letter-spacing:.5px;font-weight:600}
+.chip-i{background:rgba(91,91,214,.15);color:var(--indigo-l);border:.5px solid rgba(91,91,214,.35)}
+.chip-e{background:rgba(16,201,143,.12);color:var(--emerald);border:.5px solid rgba(16,201,143,.3)}
+.chip-a{background:rgba(245,158,11,.12);color:var(--amber);border:.5px solid rgba(245,158,11,.3)}
 
-/* ─── PAGE ACCUEIL ─── */
-.hero{margin-bottom:40px}
-.hero h1{font-size:clamp(28px,5vw,44px);font-weight:600;letter-spacing:-1px;line-height:1.15;margin-bottom:12px}
-.hero p{font-size:14px;color:var(--text-muted);line-height:1.7;max-width:480px;margin-bottom:32px}
-.modules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.module-card{padding:24px;cursor:pointer;position:relative;overflow:hidden;border-radius:24px}
-.module-card::after{content:'';position:absolute;inset:0;border-radius:24px;opacity:0;transition:opacity .4s;pointer-events:none}
-.module-card.indigo::after{background:radial-gradient(circle at 30% 30%,rgba(91,91,214,.12),transparent 60%)}
-.module-card.emerald::after{background:radial-gradient(circle at 30% 30%,rgba(16,201,143,.10),transparent 60%)}
-.module-card:hover::after{opacity:1}
-.module-card:hover{transform:translateY(-3px)}
-.mod-icon{font-size:28px;margin-bottom:14px}
-.mod-num{font-size:9px;letter-spacing:2px;color:var(--text-dim);margin-bottom:4px}
-.mod-name{font-size:14px;font-weight:600;margin-bottom:5px}
-.mod-desc{font-size:11px;color:var(--text-muted);line-height:1.6;margin-bottom:12px}
-.mod-tag{display:inline-block;font-size:9px;padding:3px 10px;border-radius:10px;letter-spacing:.5px;font-weight:500}
-.tag-indigo{background:rgba(91,91,214,.15);color:#7B7BF0;border:.5px solid rgba(91,91,214,.35)}
-.tag-emerald{background:rgba(16,201,143,.12);color:var(--emerald);border:.5px solid rgba(16,201,143,.3)}
+/* ══════════════════════════════════════════
+   LANDING PAGE
+══════════════════════════════════════════ */
+.hero{padding:40px 0 60px;text-align:center}
+.hero h1{font-size:clamp(32px,6vw,58px);font-weight:700;letter-spacing:-2px;line-height:1.1;margin-bottom:18px}
+.hero-sub{font-size:clamp(14px,2vw,17px);color:var(--txt-m);line-height:1.8;max-width:520px;margin:0 auto 40px}
+.cta-hero{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;border-radius:30px;border:none;background:linear-gradient(135deg,var(--indigo),var(--emerald));color:white;font-size:15px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;transition:all .25s;letter-spacing:.3px;box-shadow:0 8px 40px rgba(91,91,214,.4)}
+.cta-hero:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 12px 50px rgba(91,91,214,.6)}
+.proof-bar{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:20px;font-size:12px;color:var(--txt-m)}
+.proof-item{display:flex;align-items:center;gap:6px}
+.stars{color:#F59E0B;font-size:13px}
 
-/* ─── PAGE DHIKR ─── */
-.tabs-container{display:flex;gap:4px;padding:6px;border-radius:20px;background:var(--glass-bg);border:.5px solid var(--glass-border);width:fit-content;margin-bottom:32px}
-.tab-btn{padding:10px 20px;border-radius:14px;border:none;font-family:'Sora',sans-serif;font-size:12px;cursor:pointer;transition:all .25s;background:transparent;color:var(--text-muted)}
-.tab-btn.active{background:var(--glass-card);border:.5px solid var(--glass-border);color:var(--text-bright)}
-.tab-sub{display:block;font-size:9px;margin-top:2px;color:var(--text-dim)}
+/* Feature cards */
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:50px 0}
+.feat-card{padding:24px;position:relative;overflow:hidden}
+.feat-card::after{content:'';position:absolute;inset:0;border-radius:24px;opacity:0;transition:opacity .4s;pointer-events:none}
+.feat-card.f-i::after{background:radial-gradient(circle at 20% 20%,rgba(91,91,214,.14),transparent 60%)}
+.feat-card.f-e::after{background:radial-gradient(circle at 20% 20%,rgba(16,201,143,.11),transparent 60%)}
+.feat-card.f-a::after{background:radial-gradient(circle at 20% 20%,rgba(245,158,11,.1),transparent 60%)}
+.feat-card:hover::after{opacity:1}
+.feat-ico{font-size:28px;margin-bottom:14px}
+.feat-title{font-size:15px;font-weight:600;margin-bottom:8px}
+.feat-desc{font-size:12px;color:var(--txt-m);line-height:1.7}
 
-/* Long player */
-.long-player{padding:24px}
-.lp-header{display:flex;align-items:center;gap:16px;margin-bottom:16px}
-.lp-icon{width:56px;height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;transition:box-shadow .3s}
-.lp-desc{font-size:12px;color:var(--text-muted);line-height:1.7;margin-bottom:20px}
-.progress-bar{height:5px;background:rgba(255,255,255,0.08);border-radius:4px;cursor:pointer;position:relative;overflow:hidden;margin-bottom:6px}
-.progress-fill{height:100%;border-radius:4px;width:0%;transition:width .3s}
-.time-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-bottom:16px}
-.player-controls{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px}
-.play-big{width:56px;height:56px;border-radius:50%;border:none;color:white;font-size:18px;cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center}
-.play-big:hover{transform:scale(1.08)}
-.file-placeholder{border-radius:16px;padding:24px;text-align:center;border:.5px solid rgba(245,158,11,.3);background:rgba(245,158,11,.05)}
-.file-placeholder p{font-size:12px;color:var(--text-muted);line-height:1.7}
-code{font-size:11px;padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.08);color:var(--text-bright)}
+/* Pricing */
+.pricing-card{padding:32px;text-align:center;position:relative;overflow:hidden}
+.price-big{font-size:52px;font-weight:700;letter-spacing:-2px;margin:16px 0 4px}
+.price-period{font-size:12px;color:var(--txt-m)}
+.price-feat{list-style:none;text-align:left;margin:24px 0;display:flex;flex-direction:column;gap:10px}
+.price-feat li{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--txt-m)}
+.price-feat li::before{content:'✓';color:var(--emerald);font-weight:700;flex-shrink:0}
+.cta-price{width:100%;padding:14px;border-radius:20px;border:none;font-family:'Sora',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;letter-spacing:.3px}
 
-/* Dhikr counter */
-.dhikr-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:640px){.dhikr-grid{grid-template-columns:1fr}}
-.counter-card{padding:32px;display:flex;flex-col:column;align-items:center;text-align:center}
-.dhikr-arabic-big{font-size:clamp(28px,5vw,40px);line-height:1.8;margin-bottom:8px}
-.ring-wrap{position:relative;width:160px;height:160px;margin:0 auto 20px}
-.ring-wrap svg{position:absolute;inset:0;width:160px;height:160px;transform:rotate(-90deg)}
-.tap-btn{position:absolute;inset:12px;border-radius:50%;border:.5px solid;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-family:'Sora',sans-serif;font-size:22px;transition:all .2s;background:var(--glass-card)}
-.tap-btn:active{transform:scale(.88)}
-.tap-btn:hover{transform:scale(1.05)}
-.count-big{font-size:clamp(48px,8vw,64px);font-weight:300;letter-spacing:-3px;line-height:1}
-.dhikr-right{display:flex;flex-direction:column;gap:12px}
-.info-card{padding:18px}
-.dhikr-list-item{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:16px;border:.5px solid var(--glass-border);cursor:pointer;transition:all .2s;background:transparent;width:100%;font-family:'Sora',sans-serif;text-align:left}
-.dhikr-list-item:hover{background:var(--glass-bg)}
-.badge{font-size:9px;padding:3px 8px;border-radius:8px}
+/* Testimonials */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:32px 0}
+.testi-card{padding:20px}
+.testi-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.testi-role{font-size:10px;color:var(--txt-d);letter-spacing:1px;margin-bottom:12px}
+.testi-text{font-size:12px;color:var(--txt-m);line-height:1.7;font-style:italic}
 
-/* Imam Virtuel button */
-.imam-btn{display:flex;align-items:center;gap:12px;padding:16px;border-radius:18px;border:.5px solid rgba(91,91,214,.3);background:linear-gradient(135deg,rgba(91,91,214,.08),rgba(16,201,143,.06));cursor:pointer;transition:all .3s;text-decoration:none;width:100%}
-.imam-btn:hover{border-color:rgba(91,91,214,.5);transform:translateX(3px)}
-.imam-btn-icon{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#5B5BD6,#10C98F);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;box-shadow:0 4px 16px rgba(91,91,214,.4)}
-.arrow{font-size:18px;color:var(--text-dim);margin-left:auto;transition:transform .2s}
-.imam-btn:hover .arrow{transform:translateX(4px)}
+/* ══════════════════════════════════════════
+   APP PAGES
+══════════════════════════════════════════ */
+.back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;border:.5px solid var(--border);background:var(--glass);color:var(--txt-m);cursor:pointer;font-family:'Sora',sans-serif;font-size:12px;margin-bottom:28px;transition:all .2s}
+.back-btn:hover{color:var(--txt);border-color:var(--border-h)}
 
-/* Module page */
-.module-page-back{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;border:.5px solid var(--glass-border);background:var(--glass-bg);color:var(--text-muted);cursor:pointer;font-family:'Sora',sans-serif;font-size:12px;margin-bottom:24px;transition:all .2s}
-.module-page-back:hover{color:var(--text-bright)}
-.steps-list{list-style:none;display:flex;flex-direction:column;gap:0}
-.step-item{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:.5px solid rgba(255,255,255,.05)}
-.step-item:last-child{border-bottom:none}
-.step-num{width:26px;height:26px;border-radius:50%;flex-shrink:0;background:rgba(91,91,214,.18);border:.5px solid rgba(91,91,214,.4);color:#7B7BF0;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center}
-.prayer-row{display:flex;align-items:center;gap:14px;padding:14px 20px;margin-bottom:8px;border-radius:18px}
+/* Parcours steps */
+.parcours-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:40px}
+.step-card{padding:20px;cursor:pointer;position:relative}
+.step-card.done{border-color:rgba(16,201,143,.4);background:rgba(16,201,143,.06)}
+.step-num{font-size:9px;letter-spacing:2px;color:var(--txt-d);margin-bottom:6px}
+.step-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.step-desc{font-size:11px;color:var(--txt-m)}
+.step-check{position:absolute;top:16px;right:16px;width:20px;height:20px;border-radius:50%;background:rgba(16,201,143,.2);border:.5px solid rgba(16,201,143,.4);color:var(--emerald);font-size:10px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.step-card.done .step-check{opacity:1}
 
-/* Audio bar */
-#audio-bar{position:fixed;bottom:0;left:0;right:0;z-index:200;transform:translateY(100%);transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
-#audio-bar.visible{transform:translateY(0)}
-.audio-bar-inner{background:rgba(10,11,26,.85);backdrop-filter:blur(24px);border-top:.5px solid var(--glass-border);padding:0 24px;height:72px;display:flex;align-items:center;gap:16px;max-width:960px;margin:0 auto}
+/* 5 Pilliers infographic */
+.piliers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.pilier-card{padding:20px;text-align:center;cursor:pointer}
+.pilier-ico{font-size:32px;margin-bottom:10px}
+.pilier-num{font-size:9px;letter-spacing:2px;color:var(--txt-d);margin-bottom:4px}
+.pilier-name{font-size:13px;font-weight:600;margin-bottom:6px}
+.pilier-desc{font-size:11px;color:var(--txt-m);line-height:1.5}
 
-/* Waveform anim */
-.wave{display:flex;align-items:center;gap:2px;height:20px}
-.wave-bar{width:2px;border-radius:2px;animation:waveAnim .7s ease-in-out infinite}
-@keyframes waveAnim{0%,100%{transform:scaleY(1)}50%{transform:scaleY(2.5)}}
+/* Prayer dashboard */
+.prayer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:24px}
+.prayer-card{padding:20px;text-align:center;cursor:pointer;transition:all .3s}
+.prayer-card:hover,.prayer-card.selected{transform:translateY(-4px)}
+.prayer-ico{font-size:28px;margin-bottom:10px}
+.prayer-name{font-size:14px;font-weight:600;margin-bottom:3px}
+.prayer-time{font-size:10px;color:var(--txt-m);margin-bottom:6px}
+.prayer-rakat{font-size:9px;padding:3px 10px;border-radius:10px}
 
-/* Gestes page */
-.geste-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
-.geste-tab{padding:8px 16px;border-radius:14px;border:.5px solid var(--glass-border);background:transparent;color:var(--text-muted);cursor:pointer;font-family:'Sora',sans-serif;font-size:12px;transition:all .2s}
-.geste-tab.active{color:var(--text-bright)}
-.geste-detail{padding:28px;text-align:center}
+/* Checklist */
+.check-list{display:flex;flex-direction:column;gap:12px;margin:24px 0}
+.check-item{display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:18px;border:.5px solid var(--border);background:var(--glass);cursor:pointer;transition:all .2s}
+.check-item.checked{border-color:rgba(16,201,143,.4);background:rgba(16,201,143,.07)}
+.check-box{width:24px;height:24px;border-radius:8px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:12px}
+.check-item.checked .check-box{background:var(--emerald);border-color:var(--emerald);color:white}
+.check-label{font-size:13px;font-weight:500}
+.check-sub{font-size:11px;color:var(--txt-m);margin-top:2px}
+
+/* Launch button */
+.launch-btn{width:100%;padding:18px;border-radius:24px;border:none;font-family:'Sora',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:10px}
+.launch-btn.ready{background:linear-gradient(135deg,var(--indigo),var(--emerald));color:white;box-shadow:0 8px 40px rgba(91,91,214,.45)}
+.launch-btn.ready:hover{transform:translateY(-2px);box-shadow:0 12px 50px rgba(91,91,214,.6)}
+.launch-btn.disabled{background:var(--glass);color:var(--txt-d);border:.5px solid var(--border);cursor:not-allowed}
+
+/* Audio player */
+.audio-player-card{padding:28px}
+.now-playing{font-size:10px;letter-spacing:3px;color:var(--emerald);text-transform:uppercase;margin-bottom:6px}
+.track-title{font-size:20px;font-weight:600;margin-bottom:4px}
+.track-sub{font-size:12px;color:var(--txt-m);margin-bottom:24px}
+.prog-wrap{height:6px;background:rgba(255,255,255,.08);border-radius:4px;cursor:pointer;margin-bottom:8px;position:relative;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px;width:0%;transition:width .5s linear}
+.time-row{display:flex;justify-content:space-between;font-size:10px;color:var(--txt-d);margin-bottom:20px}
+.player-ctrl{display:flex;align-items:center;justify-content:center;gap:12px}
+.ctrl-big{width:60px;height:60px;border-radius:50%;border:none;color:white;font-size:20px;cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(91,91,214,.5)}
+.ctrl-big:hover{transform:scale(1.08)}
+.ctrl-sm{width:40px;height:40px;border-radius:50%;border:.5px solid var(--border);background:var(--glass);color:var(--txt-m);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'Sora',sans-serif}
+.ctrl-sm:hover{color:var(--txt);border-color:var(--border-h)}
+
+/* Waveform */
+.waveform{display:flex;align-items:center;justify-content:center;gap:3px;height:32px;margin:16px 0}
+.wv{width:3px;border-radius:3px;animation:wv .8s ease-in-out infinite;transform-origin:center}
+@keyframes wv{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+
+/* Bilan / Success */
+.bilan-card{padding:40px;text-align:center}
+.bilan-icon{font-size:64px;margin-bottom:20px;animation:pop .5s ease}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.bilan-title{font-size:28px;font-weight:700;letter-spacing:-1px;margin-bottom:8px}
+.bilan-sub{font-size:14px;color:var(--txt-m);margin-bottom:32px;line-height:1.7}
+.bilan-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
+.btn-success{padding:12px 28px;border-radius:20px;border:none;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;background:linear-gradient(135deg,var(--emerald),#059669);color:white}
+.btn-success:hover{transform:scale(1.04);box-shadow:0 4px 20px rgba(16,201,143,.4)}
+.btn-retry{padding:12px 28px;border-radius:20px;border:.5px solid var(--border);background:var(--glass);font-family:'Sora',sans-serif;font-size:13px;color:var(--txt-m);cursor:pointer;transition:all .2s}
+.btn-retry:hover{color:var(--txt);border-color:var(--border-h)}
+
+/* Review form */
+.review-form{background:var(--glass);border:.5px solid var(--border);border-radius:20px;padding:20px;margin-top:20px;text-align:left}
+.review-stars{display:flex;gap:6px;margin:10px 0;font-size:24px;cursor:pointer}
+.review-star{transition:transform .15s;opacity:.4}
+.review-star.lit{opacity:1}
+.review-star:hover{transform:scale(1.2)}
+textarea{width:100%;background:rgba(255,255,255,.05);border:.5px solid var(--border);border-radius:14px;padding:12px;color:var(--txt);font-family:'Sora',sans-serif;font-size:13px;resize:none;outline:none;transition:border-color .2s}
+textarea:focus{border-color:var(--indigo-l)}
+.btn-review{margin-top:10px;padding:10px 24px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--indigo),var(--indigo-l));color:white;font-family:'Sora',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-review:hover{transform:scale(1.03);box-shadow:0 4px 16px rgba(91,91,214,.4)}
+
+/* Reviews display */
+.reviews-list{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.review-item{background:var(--glass);border:.5px solid var(--border);border-radius:16px;padding:14px}
+.ri-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.ri-name{font-size:12px;font-weight:600}
+.ri-stars{font-size:11px;color:var(--amber)}
+.ri-text{font-size:12px;color:var(--txt-m);line-height:1.6;font-style:italic}
+
+/* Audio bar fixe */
+#audio-bar{position:fixed;bottom:0;left:0;right:0;z-index:300;transform:translateY(100%);transition:transform .45s cubic-bezier(.34,1.56,.64,1)}
+#audio-bar.show{transform:translateY(0)}
+.ab-inner{background:rgba(9,9,26,.9);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:.5px solid var(--border);padding:0 clamp(16px,4vw,40px);height:68px;display:flex;align-items:center;gap:14px}
+.ab-dot{width:7px;height:7px;border-radius:50%;background:var(--emerald);animation:pulse 2s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+.ab-info{flex:1;min-width:0}
+.ab-label{font-size:9px;letter-spacing:2px;color:var(--emerald);text-transform:uppercase}
+.ab-title{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Responsive */
+@media(max-width:640px){
+  .hero h1{letter-spacing:-1px}
+  .parcours-steps{grid-template-columns:1fr 1fr}
+  .prayer-grid{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
 
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
-<div class="orb orb3"></div>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
 
-<!-- NAV -->
+<!-- ═══════════════════════════════════════════════════
+     NAV
+══════════════════════════════════════════════════════ -->
 <nav>
-  <div class="brand" onclick="showPage('accueil')">
-    <div class="brand-icon">☽</div>
-    <div><div class="brand-name">Mon Compagnon</div><div class="brand-year">2030</div></div>
-  </div>
-  <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('accueil')">Accueil</button>
-    <button class="nav-tab" onclick="showPage('shahada')">Shahada</button>
-    <button class="nav-tab" onclick="showPage('salat')">Salat</button>
-    <button class="nav-tab" onclick="showPage('ablutions')">Ablutions</button>
-    <button class="nav-tab" onclick="showPage('gestes')">Gestes</button>
-    <button class="nav-tab" onclick="showPage('dhikr')">Dhikr</button>
+  <a class="brand" onclick="go('landing')">
+    <div class="brand-ico">☽</div>
+    <div><div class="brand-n">Mon Compagnon</div><div class="brand-y">2030</div></div>
+  </a>
+  <div class="nav-r">
+    <button class="menu-btn" onclick="go('app-parcours')">📖 Apprendre</button>
+    <button class="menu-btn" onclick="go('app-dashboard')">🕌 Prier</button>
+    <button class="cta-nav" onclick="go('landing')">Commencer →</button>
   </div>
 </nav>
 
 <main>
 
-<!-- ══════════════════════ ACCUEIL ══════════════════════ -->
-<div class="page active" id="page-accueil">
+<!-- ═══════════════════════════════════════════════════
+     LANDING PAGE
+══════════════════════════════════════════════════════ -->
+<div class="page active" id="page-landing">
+
+  <!-- Hero -->
   <div class="hero">
-    <p class="accent-label" style="margin-bottom:10px">Bismillah · Bienvenue</p>
-    <h1><span class="gradient-text">Apprends ta religion</span><br><span style="color:var(--text-muted);font-weight:300">à ton rythme.</span></h1>
-    <p>Un guide audio-interactif. Écoute, comprends, pratique — même les yeux fermés, même en mouvement.</p>
+    <span class="chip chip-e" style="margin-bottom:20px">✦ Application islamique · Design 2030</span>
+    <h1><span class="gtxt">Apprends à prier</span><br>comme jamais avant.</h1>
+    <p class="hero-sub">La première application qui te guide pas à pas dans ta prière — avec une voix chaleureuse, un parcours structuré et un design qui donne envie d'apprendre.</p>
+    <button class="cta-hero" onclick="go('app-parcours')">
+      🕌 Commencer gratuitement <span style="font-size:18px">→</span>
+    </button>
+    <div class="proof-bar">
+      <div class="proof-item"><span class="stars">★★★★★</span> <span>4.9/5 · 127 avis</span></div>
+      <div class="proof-item">👤 2 300+ utilisateurs</div>
+      <div class="proof-item">🌍 France · Belgique · Maroc</div>
+    </div>
   </div>
-  <p class="section-label" style="margin-bottom:16px">Modules disponibles</p>
-  <div class="modules-grid">
-    <div class="glass-card module-card indigo" onclick="showPage('shahada')">
-      <div class="mod-icon">✦</div><div class="mod-num">01</div>
-      <div class="mod-name">Shahada</div>
-      <div class="mod-desc">La profession de foi et son sens profond</div>
-      <span class="mod-tag tag-indigo">▶ Audio-guidé</span>
+
+  <!-- Features -->
+  <p class="sec" style="margin-bottom:20px;text-align:center">Pourquoi choisir Mon Compagnon ?</p>
+  <div class="features">
+    <div class="glass-card feat-card f-i" onclick="go('app-parcours')">
+      <div class="feat-ico">🎓</div>
+      <p class="feat-title">Parcours structuré</p>
+      <p class="feat-desc">De la Shahada aux gestes de la prière — un chemin clair, progressif, conçu pour les débutants comme pour les confirmés.</p>
     </div>
-    <div class="glass-card module-card emerald" onclick="showPage('salat')">
-      <div class="mod-icon">◐</div><div class="mod-num">02</div>
-      <div class="mod-name">La Salat</div>
-      <div class="mod-desc">Les 5 prières : horaires et intentions</div>
-      <span class="mod-tag tag-emerald">Interactif</span>
+    <div class="glass-card feat-card f-e" onclick="go('app-dashboard')">
+      <div class="feat-ico">🕌</div>
+      <p class="feat-title">Prière guidée en direct</p>
+      <p class="feat-desc">Sélectionne ta prière, coche ta checklist, et laisse-toi guider par une voix douce et pédagogique. Zéro téléchargement.</p>
     </div>
-    <div class="glass-card module-card indigo" onclick="showPage('ablutions')">
-      <div class="mod-icon">◎</div><div class="mod-num">03</div>
-      <div class="mod-name">Ablutions</div>
-      <div class="mod-desc">Guide Wudu étape par étape</div>
-      <span class="mod-tag tag-indigo">▶ Audio-guidé</span>
+    <div class="glass-card feat-card f-a" onclick="go('app-dhikr')">
+      <div class="feat-ico">∞</div>
+      <p class="feat-title">Dhikr & Invocations</p>
+      <p class="feat-desc">Compteur interactif, formules en arabe avec translittération, invocations du matin et du soir par Omar Isham.</p>
     </div>
-    <div class="glass-card module-card emerald" onclick="showPage('gestes')">
-      <div class="mod-icon">❋</div><div class="mod-num">04</div>
-      <div class="mod-name">Les Gestes</div>
-      <div class="mod-desc">Positions de la prière animées</div>
-      <span class="mod-tag tag-emerald">Animation</span>
+    <div class="glass-card feat-card f-i">
+      <div class="feat-ico">📊</div>
+      <p class="feat-title">Suivi de progression</p>
+      <p class="feat-desc">Chaque prière réussie est enregistrée. Ton taux de complétion, tes sessions de Dhikr — tout est là.</p>
     </div>
-    <div class="glass-card module-card indigo" onclick="showPage('dhikr')">
-      <div class="mod-icon">∞</div><div class="mod-num">05</div>
-      <div class="mod-name">Dhikr & Invocations</div>
-      <div class="mod-desc">Compteur interactif · Matin & Soir</div>
-      <span class="mod-tag tag-indigo">● Live</span>
+    <div class="glass-card feat-card f-e">
+      <div class="feat-ico">🔊</div>
+      <p class="feat-title">Audio immersif</p>
+      <p class="feat-desc">Une voix chaleureuse lit chaque cours. Apprends même les yeux fermés, dans les transports ou chez toi.</p>
     </div>
+    <div class="glass-card feat-card f-a">
+      <div class="feat-ico">📱</div>
+      <p class="feat-title">Disponible partout</p>
+      <p class="feat-desc">Fonctionne sur téléphone, tablette et ordinateur. Pas d'installation — ouvre et c'est prêt.</p>
+    </div>
+  </div>
+
+  <!-- Testimonials -->
+  <p class="sec" style="margin-bottom:20px;text-align:center">Ce qu'ils en disent</p>
+  <div class="testi-grid" id="landing-reviews">
+    <div class="glass-card testi-card"><div class="stars" style="font-size:12px;margin-bottom:8px">★★★★★</div><p class="testi-text">« Je cherchais depuis longtemps une app aussi claire. Mon fils de 12 ans a appris sa prière en 3 jours. Barak Allah oufik ! »</p><p class="testi-name" style="margin-top:12px">Fatima B.</p><p class="testi-role">Paris · Maman</p></div>
+    <div class="glass-card testi-card"><div class="stars" style="font-size:12px;margin-bottom:8px">★★★★★</div><p class="testi-text">« Le design est magnifique, la voix est apaisante. J'utilise le Dhikr chaque soir. Vraiment une pépite. »</p><p class="testi-name" style="margin-top:12px">Youssef M.</p><p class="testi-role">Bruxelles · Étudiant</p></div>
+    <div class="glass-card testi-card"><div class="stars" style="font-size:12px;margin-bottom:8px">★★★★☆</div><p class="testi-text">« Enfin une application sérieuse et belle à la fois. Je recommande à tous ceux qui veulent (re)apprendre leur deen. »</p><p class="testi-name" style="margin-top:12px">Karim D.</p><p class="testi-role">Lyon · Converti</p></div>
+  </div>
+
+  <!-- Pricing -->
+  <p class="sec" style="margin:40px 0 20px;text-align:center">Un accès complet, un prix juste</p>
+  <div style="max-width:380px;margin:0 auto">
+    <div class="glass-card pricing-card" style="border-color:rgba(91,91,214,.4);background:linear-gradient(135deg,rgba(91,91,214,.08),rgba(16,201,143,.05))">
+      <span class="chip chip-e">⭐ Accès Complet</span>
+      <div class="price-big gtxt">2,50€</div>
+      <p class="price-period">paiement unique · à vie</p>
+      <ul class="price-feat">
+        <li>Parcours d'apprentissage complet</li>
+        <li>Prière guidée pour les 5 prières</li>
+        <li>Dhikr & Invocations Matin/Soir</li>
+        <li>Checklist "Prêt à Prier"</li>
+        <li>Suivi de progression</li>
+        <li>Mises à jour incluses à vie</li>
+      </ul>
+      <button class="cta-price" style="background:linear-gradient(135deg,var(--indigo),var(--emerald));color:white;box-shadow:0 6px 30px rgba(91,91,214,.4)" onclick="go('app-parcours')">
+        Commencer maintenant →
+      </button>
+      <p style="font-size:11px;color:var(--txt-d);margin-top:12px">✓ Satisfait ou remboursé 7 jours</p>
+    </div>
+  </div>
+
+  <div style="height:60px"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     APP : PARCOURS
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-app-parcours">
+  <p class="acc" style="margin-bottom:6px">Ton parcours</p>
+  <h1 style="font-size:28px;font-weight:700;letter-spacing:-1px;margin-bottom:6px">Par où commencer ?</h1>
+  <p style="font-size:13px;color:var(--txt-m);margin-bottom:32px">Suis les étapes dans l'ordre — chaque bloc prépare le suivant.</p>
+
+  <div class="parcours-steps">
+    <div class="glass-card step-card" id="step0" onclick="go('app-fondations')">
+      <div class="step-check">✓</div>
+      <div class="step-num">ÉTAPE 01</div>
+      <div style="font-size:22px;margin-bottom:10px">✦</div>
+      <div class="step-title">Fondations</div>
+      <div class="step-desc">Shahada & 5 Piliers — la base de tout.</div>
+      <div style="margin-top:14px"><span class="chip chip-i">Audio-guidé</span></div>
+    </div>
+    <div class="glass-card step-card" id="step1" onclick="go('app-preparation')">
+      <div class="step-check">✓</div>
+      <div class="step-num">ÉTAPE 02</div>
+      <div style="font-size:22px;margin-bottom:10px">◎</div>
+      <div class="step-title">Préparation</div>
+      <div class="step-desc">Ablutions & Sens de la prière.</div>
+      <div style="margin-top:14px"><span class="chip chip-e">Interactif</span></div>
+    </div>
+    <div class="glass-card step-card" id="step2" onclick="go('app-maitrise')">
+      <div class="step-check">✓</div>
+      <div class="step-num">ÉTAPE 03</div>
+      <div style="font-size:22px;margin-bottom:10px">❋</div>
+      <div class="step-title">Maîtrise</div>
+      <div class="step-desc">Les gestes & positions de la prière.</div>
+      <div style="margin-top:14px"><span class="chip chip-a">Animation</span></div>
+    </div>
+    <div class="glass-card step-card" id="step3" onclick="go('app-dashboard')" style="border-color:rgba(91,91,214,.35);background:linear-gradient(135deg,rgba(91,91,214,.08),transparent)">
+      <div class="step-check">✓</div>
+      <div class="step-num">ÉTAPE 04</div>
+      <div style="font-size:22px;margin-bottom:10px">🕌</div>
+      <div class="step-title">L'Action</div>
+      <div class="step-desc">Lance ta prière guidée — c'est parti !</div>
+      <div style="margin-top:14px"><span class="chip chip-i">● Live</span></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <button class="g-btn" onclick="go('app-dhikr')">∞ Dhikr & Invocations</button>
+    <button class="g-btn" onclick="go('landing')">← Accueil</button>
   </div>
 </div>
 
-<!-- ══════════════════════ SHAHADA ══════════════════════ -->
-<div class="page" id="page-shahada">
-  <button class="module-page-back" onclick="showPage('accueil')">← Retour</button>
-  <p class="accent-label" style="margin-bottom:4px">Module 01</p>
-  <h1 style="font-size:32px;font-weight:600;letter-spacing:-1px;margin-bottom:6px">La Shahada</h1>
-  <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">La profession de foi — premier pilier de l'Islam</p>
-  <button class="glass-btn" style="margin-bottom:24px;display:flex;align-items:center;gap:8px" onclick="speak('La Shahada est le premier pilier de Islam. Attester sincèrement qu il n y a de dieu qu Allah, et que Muhammad est Son messager, c est s engager du cœur, de la langue et de l acte.')">
+<!-- ═══════════════════════════════════════════════════
+     APP : FONDATIONS (Shahada + 5 Piliers)
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-app-fondations">
+  <button class="back-btn" onclick="go('app-parcours')">← Étape 01</button>
+  <p class="acc" style="margin-bottom:4px">Fondations de l'Islam</p>
+  <h1 style="font-size:28px;font-weight:700;letter-spacing:-1px;margin-bottom:6px">Shahada & 5 Piliers</h1>
+  <p style="font-size:13px;color:var(--txt-m);margin-bottom:28px">Comprendre avant d'agir — la base de tout croyant.</p>
+
+  <button class="g-btn" style="margin-bottom:28px;display:flex;align-items:center;gap:8px" onclick="speak('La Shahada est la porte d entrée dans l Islam. Elle comporte deux témoignages essentiels : attester qu il n y a de dieu qu Allah, Seul, sans associé. Et attester que Muhammad est Son serviteur et Son messager. Cette parole, prononcée avec conviction, transforme l être intérieur et oriente toute vie vers le Créateur.')">
     🔊 Écouter le cours
   </button>
-  <div class="glass-card" style="padding:32px;text-align:center;margin-bottom:16px">
-    <p class="arabic" style="font-size:clamp(20px,4vw,32px);color:#7B7BF0;line-height:2;margin-bottom:12px">أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللَّهِ</p>
-    <p style="font-size:11px;color:var(--text-muted);letter-spacing:1px;margin-bottom:8px">Ashhadu an lā ilāha illAllāh wa ashhadu anna Muḥammadan rasūlullāh</p>
-    <p style="font-size:13px;font-style:italic;color:var(--text-dim)">« J'atteste qu'il n'y a de dieu qu'Allah et que Muhammad est Son messager. »</p>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
-    <div class="glass-card" style="padding:20px"><p style="font-size:13px;font-weight:600;margin-bottom:8px">Un engagement du cœur</p><p style="font-size:12px;color:var(--text-muted);line-height:1.7">La Shahada n'est pas une simple formule — c'est une conviction profonde qui transforme l'être intérieur.</p></div>
-    <div class="glass-card" style="padding:20px"><p style="font-size:13px;font-weight:600;margin-bottom:8px">Deux témoignages</p><p style="font-size:12px;color:var(--text-muted);line-height:1.7">Elle atteste l'unicité d'Allah (Tawhid) et la prophétie de Muhammad ﷺ — deux piliers insséparables.</p></div>
-    <div class="glass-card" style="padding:20px"><p style="font-size:13px;font-weight:600;margin-bottom:8px">À répéter chaque jour</p><p style="font-size:12px;color:var(--text-muted);line-height:1.7">Intégrée dans l'Adhan et dans chaque prière — un rappel constant de notre engagement envers Allah.</p></div>
-  </div>
-</div>
 
-<!-- ══════════════════════ SALAT ══════════════════════ -->
-<div class="page" id="page-salat">
-  <button class="module-page-back" onclick="showPage('accueil')">← Retour</button>
-  <p class="accent-label" style="margin-bottom:4px">Module 02</p>
-  <h1 style="font-size:32px;font-weight:600;letter-spacing:-1px;margin-bottom:6px">La Salat</h1>
-  <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">La prière — deuxième pilier de l'Islam</p>
-  <button class="glass-btn" style="margin-bottom:28px;display:flex;align-items:center;gap:8px" onclick="speak('La prière est le deuxième pilier de l Islam. Elle est obligatoire cinq fois par jour. Chaque prière est un rendez-vous direct avec Allah, une pause spirituelle qui purifie le cœur et rapproche le croyant de son Seigneur.')">
-    🔊 Écouter le cours
+  <div class="glass-card" style="padding:28px;text-align:center;margin-bottom:20px">
+    <p class="arabic" style="font-size:clamp(18px,4vw,30px);color:var(--indigo-l);line-height:2;margin-bottom:12px">أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللَّهِ</p>
+    <p style="font-size:11px;color:var(--txt-m);letter-spacing:1px;margin-bottom:8px">Ashhadu an lā ilāha illAllāh wa ashhadu anna Muḥammadan rasūlullāh</p>
+    <p style="font-size:13px;color:var(--txt-d);font-style:italic">« Je témoigne qu'il n'y a de dieu qu'Allah et que Muhammad est Son messager. »</p>
+  </div>
+
+  <p class="sec" style="margin-bottom:16px">Les 5 Piliers de l'Islam</p>
+  <div class="piliers-grid">
+    <div class="glass-card pilier-card" onclick="speakPilier(1)">
+      <div class="pilier-ico">✦</div><div class="pilier-num">01</div>
+      <div class="pilier-name">Shahada</div><div class="pilier-desc">La profession de foi</div>
+      <div style="margin-top:10px"><span class="chip chip-i">🔊 Écouter</span></div>
+    </div>
+    <div class="glass-card pilier-card" onclick="speakPilier(2)">
+      <div class="pilier-ico">🕌</div><div class="pilier-num">02</div>
+      <div class="pilier-name">Salat</div><div class="pilier-desc">La prière · 5×/jour</div>
+      <div style="margin-top:10px"><span class="chip chip-e">🔊 Écouter</span></div>
+    </div>
+    <div class="glass-card pilier-card" onclick="speakPilier(3)">
+      <div class="pilier-ico">🤲</div><div class="pilier-num">03</div>
+      <div class="pilier-name">Zakat</div><div class="pilier-desc">L'aumône purificatrice</div>
+      <div style="margin-top:10px"><span class="chip chip-a">🔊 Écouter</span></div>
+    </div>
+    <div class="glass-card pilier-card" onclick="speakPilier(4)">
+      <div class="pilier-ico">🌙</div><div class="pilier-num">04</div>
+      <div class="pilier-name">Siyam</div><div class="pilier-desc">Le jeûne de Ramadan</div>
+      <div style="margin-top:10px"><span class="chip chip-i">🔊 Écouter</span></div>
+    </div>
+    <div class="glass-card pilier-card" onclick="speakPilier(5)">
+      <div class="pilier-ico">🕋</div><div class="pilier-num">05</div>
+      <div class="pilier-name">Hajj</div><div class="pilier-desc">Le pèlerinage à La Mecque</div>
+      <div style="margin-top:10px"><span class="chip chip-e">🔊 Écouter</span></div>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+  <button class="cta-hero" style="font-size:13px;padding:12px 28px;margin-top:20px" onclick="markStep(0);go('app-preparation')">
+    Étape suivante : Préparation →
   </button>
-  <p class="section-label" style="margin-bottom:16px">Les 5 prières quotidiennes</p>
-  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px">
-    <div class="glass-card prayer-row"><div style="width:38px;height:38px;border-radius:50%;background:rgba(245,158,11,.18);border:.5px solid rgba(245,158,11,.4);color:#F59E0B;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">◐</div><div style="flex:1"><p style="font-weight:600;font-size:13px">Fajr</p><p style="font-size:11px;color:var(--text-muted)">À l'aube, avant le lever du soleil</p></div><span style="font-size:11px;padding:4px 12px;border-radius:10px;background:rgba(245,158,11,.15);color:#F59E0B;border:.5px solid rgba(245,158,11,.3)">2 rak'at</span></div>
-    <div class="glass-card prayer-row"><div style="width:38px;height:38px;border-radius:50%;background:rgba(16,201,143,.12);border:.5px solid rgba(16,201,143,.3);color:#10C98F;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">○</div><div style="flex:1"><p style="font-weight:600;font-size:13px">Dhuhr</p><p style="font-size:11px;color:var(--text-muted)">À mi-journée</p></div><span style="font-size:11px;padding:4px 12px;border-radius:10px;background:rgba(16,201,143,.12);color:#10C98F;border:.5px solid rgba(16,201,143,.3)">4 rak'at</span></div>
-    <div class="glass-card prayer-row"><div style="width:38px;height:38px;border-radius:50%;background:rgba(245,158,11,.18);border:.5px solid rgba(245,158,11,.4);color:#F59E0B;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">◑</div><div style="flex:1"><p style="font-weight:600;font-size:13px">'Asr</p><p style="font-size:11px;color:var(--text-muted)">En après-midi</p></div><span style="font-size:11px;padding:4px 12px;border-radius:10px;background:rgba(245,158,11,.15);color:#F59E0B;border:.5px solid rgba(245,158,11,.3)">4 rak'at</span></div>
-    <div class="glass-card prayer-row"><div style="width:38px;height:38px;border-radius:50%;background:rgba(244,63,94,.12);border:.5px solid rgba(244,63,94,.3);color:#F43F5E;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">●</div><div style="flex:1"><p style="font-weight:600;font-size:13px">Maghrib</p><p style="font-size:11px;color:var(--text-muted)">Au coucher du soleil</p></div><span style="font-size:11px;padding:4px 12px;border-radius:10px;background:rgba(244,63,94,.12);color:#F43F5E;border:.5px solid rgba(244,63,94,.3)">3 rak'at</span></div>
-    <div class="glass-card prayer-row"><div style="width:38px;height:38px;border-radius:50%;background:rgba(91,91,214,.18);border:.5px solid rgba(91,91,214,.4);color:#7B7BF0;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">◉</div><div style="flex:1"><p style="font-weight:600;font-size:13px">'Isha</p><p style="font-size:11px;color:var(--text-muted)">La nuit</p></div><span style="font-size:11px;padding:4px 12px;border-radius:10px;background:rgba(91,91,214,.18);color:#7B7BF0;border:.5px solid rgba(91,91,214,.4)">4 rak'at</span></div>
-  </div>
-  <div class="glass-card" style="padding:20px"><p class="section-label" style="margin-bottom:10px">L'intention (Niyyah)</p><p style="font-size:12px;color:var(--text-muted);line-height:1.8">Avant chaque prière, l'intention doit être pure et formulée dans le cœur. Elle n'est pas une obligation orale — Allah connaît ce qui est dans les cœurs.</p></div>
 </div>
 
-<!-- ══════════════════════ ABLUTIONS ══════════════════════ -->
-<div class="page" id="page-ablutions">
-  <button class="module-page-back" onclick="showPage('accueil')">← Retour</button>
-  <p class="accent-label" style="margin-bottom:4px">Module 03</p>
-  <h1 style="font-size:32px;font-weight:600;letter-spacing:-1px;margin-bottom:6px">Les Ablutions</h1>
-  <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">Le Wudu — purification rituelle avant la prière</p>
-  <button class="glass-btn" style="margin-bottom:28px;display:flex;align-items:center;gap:8px" onclick="speak('Le Wudu est la purification rituelle avant la prière. Il comporte huit étapes essentielles. La pureté extérieure prépare la pureté intérieure du croyant.')">
+<!-- ═══════════════════════════════════════════════════
+     APP : PRÉPARATION (Ablutions)
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-app-preparation">
+  <button class="back-btn" onclick="go('app-fondations')">← Étape 01</button>
+  <p class="acc" style="margin-bottom:4px">Étape 02 · Préparation</p>
+  <h1 style="font-size:28px;font-weight:700;letter-spacing:-1px;margin-bottom:6px">Les Ablutions</h1>
+  <p style="font-size:13px;color:var(--txt-m);margin-bottom:24px">Le Wudu — purification rituelle avant la prière</p>
+  <button class="g-btn" style="margin-bottom:24px;display:flex;align-items:center;gap:8px" onclick="speak('Le Wudu est la purification rituelle obligatoire avant chaque prière. Il comporte huit étapes précises que nous allons détailler ensemble. La pureté du corps prépare la pureté du cœur.')">
     🔊 Écouter le cours
   </button>
   <div class="glass-card" style="padding:20px">
-    <ul class="steps-list">
-      <li class="step-item"><div class="step-num">1</div><div><p style="font-size:13px;font-weight:600;color:white;margin-bottom:3px">L'intention (Niyyah)</p><p style="font-size:12px;color:var(--text-muted);line-height:1.6">Formuler l'intention dans le cœur — purification pour la prière.</p></div></li>
-      <li class="step-item"><div class="step-num">2</div><div><p style="font-size:13px;font-weight:600;color:white;margin-bottom:3px">Bismillah</p><p style="font-size:12px;color:var(--text-muted);line-height:1.6">Commencer en prononçant le nom d'Allah.</p></div></li>
-      <li class="step-item"><div class="step-num">3</div><div><p style="font-size:13px;font-weight:600;color:white;margin-bottom:3px">Les mains</p><p style="font-size:12px;color:var(--text-muted);line-height:1.6">Se laver les deux mains jusqu'aux poignets, 3 fois.</p></div></li>
-      <li class="step-item"><div class="step-num">4</div><div><p style="font-size:13px;font-weight:600;color:white;margin-bottom:3px">La bouche et le nez</p><p style="font-size:12px;color:var(--text-muted);line-height:1.6">Se rincer la bouche 3 fois, puis se moucher 3 fois.</p></div></li>
-      <li class="step-item"><div class="step-num">5</div><div><p style="font-size:13px;font-weight:600;color:white;margin-bottom:3px">Le visage</p><p style="font-size:12px;color:var(--text-muted);line-height:1.6">Laver le visage de haut en bas et d'oreille en oreille, 3 fois.</p></div></li>
-      <li class="step-item"><div class="step-num">6</div><div><p style="font-size:13px;font-weight:600;color:white;margin-bottom:3px">Les avant-bras</p><p style="font-size:12px;color:var(--text-muted);line-height:1.6">De la main jusqu'aux coudes inclus, 3 fois. Droit d'abord.</p></div></li>
-      <li class="step-item"><div class="step-num">7</div><div><p style="font-size:13px;font-weight:600;color:white;margin-bottom:3px">La tête et les oreilles</p><p style="font-size:12px;color:var(--text-muted);line-height:1.6">Passer les mains humides sur la tête une fois, puis les oreilles.</p></div></li>
-      <li class="step-item"><div class="step-num">8</div><div><p style="font-size:13px;font-weight:600;color:white;margin-bottom:3px">Les pieds</p><p style="font-size:12px;color:var(--text-muted);line-height:1.6">Laver les pieds jusqu'aux chevilles, 3 fois. Droit d'abord.</p></div></li>
-    </ul>
+    <ul class="steps-list" id="wudu-steps" style="list-style:none;display:flex;flex-direction:column;gap:0"></ul>
   </div>
+  <button class="cta-hero" style="font-size:13px;padding:12px 28px;margin-top:24px" onclick="markStep(1);go('app-maitrise')">
+    Étape suivante : Maîtrise →
+  </button>
 </div>
 
-<!-- ══════════════════════ GESTES ══════════════════════ -->
-<div class="page" id="page-gestes">
-  <button class="module-page-back" onclick="showPage('accueil')">← Retour</button>
-  <p class="accent-label" style="margin-bottom:4px">Module 04</p>
-  <h1 style="font-size:32px;font-weight:600;letter-spacing:-1px;margin-bottom:6px">Les Gestes</h1>
-  <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">Positions de la prière — tap pour explorer, écoute pour apprendre</p>
-  <div class="geste-tabs">
-    <button class="geste-tab active glass-card" onclick="showGeste(0,this)">Qiyam</button>
-    <button class="geste-tab glass-card" onclick="showGeste(1,this)">Ruku'</button>
-    <button class="geste-tab glass-card" onclick="showGeste(2,this)">I'tidal</button>
-    <button class="geste-tab glass-card" onclick="showGeste(3,this)">Sujud</button>
-    <button class="geste-tab glass-card" onclick="showGeste(4,this)">Julus</button>
-    <button class="geste-tab glass-card" onclick="showGeste(5,this)">Tashahhud</button>
+<!-- ═══════════════════════════════════════════════════
+     APP : MAÎTRISE (Gestes)
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-app-maitrise">
+  <button class="back-btn" onclick="go('app-preparation')">← Étape 02</button>
+  <p class="acc" style="margin-bottom:4px">Étape 03 · Maîtrise</p>
+  <h1 style="font-size:28px;font-weight:700;letter-spacing:-1px;margin-bottom:6px">Les Gestes</h1>
+  <p style="font-size:13px;color:var(--txt-m);margin-bottom:24px">Positions de la prière — clique pour explorer</p>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px" id="geste-tabs"></div>
+  <div class="glass-card geste-detail" style="padding:32px;text-align:center" id="geste-detail">
+    <div id="g-sym" style="font-size:80px;margin-bottom:16px;opacity:.8">⏐</div>
+    <h2 id="g-name" style="font-size:22px;font-weight:700;margin-bottom:4px">Qiyam</h2>
+    <p id="g-sub" style="font-size:11px;margin-bottom:14px">La station debout</p>
+    <p id="g-desc" style="font-size:13px;color:var(--txt-m);line-height:1.8;max-width:480px;margin:0 auto 20px"></p>
+    <button class="g-btn" onclick="speakGeste()">🔊 Écouter la description</button>
   </div>
-  <div class="glass-card geste-detail" id="geste-detail">
-    <div id="geste-symbol" style="font-size:80px;margin-bottom:16px;opacity:.8">⏐</div>
-    <h2 id="geste-name" style="font-size:24px;font-weight:600;margin-bottom:4px">Qiyam</h2>
-    <p id="geste-sub" style="font-size:11px;margin-bottom:16px;color:#7B7BF0">La station debout</p>
-    <p id="geste-desc" style="font-size:13px;color:var(--text-muted);line-height:1.8;max-width:500px;margin:0 auto 20px">Se tenir debout, les bras croisés sur la poitrine (main droite sur la gauche). Regard vers le lieu de prosternation. C'est la position de départ de chaque rak'at.</p>
-    <button class="glass-btn" onclick="speakGeste()" style="margin:0 auto">🔊 Écouter</button>
-  </div>
+  <button class="cta-hero" style="font-size:13px;padding:12px 28px;margin-top:24px" onclick="markStep(2);go('app-dashboard')">
+    Étape 04 : Lancer ma prière →
+  </button>
 </div>
 
-<!-- ══════════════════════ DHIKR ══════════════════════ -->
-<div class="page" id="page-dhikr">
-  <p class="accent-label" style="margin-bottom:4px">Module 05</p>
-  <h1 style="font-size:32px;font-weight:600;letter-spacing:-1px;margin-bottom:6px">Dhikr & Invocations</h1>
-  <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">Récitations d'Omar Isham · Compteur interactif · Ressources</p>
+<!-- ═══════════════════════════════════════════════════
+     APP : DASHBOARD PRIÈRE
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-app-dashboard">
+  <button class="back-btn" onclick="go('app-parcours')">← Parcours</button>
+  <p class="acc" style="margin-bottom:4px">Étape 04 · L'Action</p>
+  <h1 style="font-size:28px;font-weight:700;letter-spacing:-1px;margin-bottom:6px">Quelle prière ?</h1>
+  <p style="font-size:13px;color:var(--txt-m);margin-bottom:28px">Sélectionne la prière que tu vas accomplir.</p>
 
-  <div class="tabs-container">
-    <button class="tab-btn active" onclick="showDhikrTab('invocations',this)">🌅 Invocations<span class="tab-sub">Matin & Soir</span></button>
-    <button class="tab-btn" onclick="showDhikrTab('compteur',this)">☽ Compteur<span class="tab-sub">Dhikr rapide</span></button>
+  <div class="prayer-grid" id="prayer-grid"></div>
+
+  <div class="glass-card" style="padding:20px;margin-top:8px" id="prayer-info-box" style="display:none">
+    <p id="prayer-info-text" style="font-size:13px;color:var(--txt-m);line-height:1.7"></p>
   </div>
 
-  <!-- Invocations tab -->
-  <div id="tab-invocations">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px">
+  <button class="launch-btn disabled" id="btn-to-checklist" style="margin-top:20px" onclick="gotoChecklist()">
+    🕌 Préparer ma prière →
+  </button>
+</div>
 
-      <!-- MATIN -->
-      <div class="glass-card long-player">
-        <div class="lp-header">
-          <div class="lp-icon" style="background:linear-gradient(135deg,#F59E0B,#FCD34D)" id="lp-icon-matin">🌄</div>
-          <div>
-            <p style="font-size:10px;letter-spacing:2px;color:#F59E0B;text-transform:uppercase;margin-bottom:3px">Omar Isham · ~25 min</p>
-            <p style="font-size:16px;font-weight:600;color:white">Invocations du Matin</p>
-            <p style="font-size:11px;color:var(--text-muted)">Adhkâr As-Sabâh</p>
-          </div>
-        </div>
-        <p class="lp-desc">Les invocations du matin à réciter après la prière de Fajr. Récitation complète par Omar Isham.</p>
-        <div class="file-placeholder" id="placeholder-matin">
-          <p style="font-size:24px;margin-bottom:8px">📁</p>
-          <p style="font-size:13px;font-weight:600;color:white;margin-bottom:6px">Ton fichier MP3 va ici</p>
-          <p style="font-size:11px">Glisse ton fichier MP3 ou MP4 sur cette zone<br>ou clique pour le sélectionner</p>
-          <input type="file" accept="audio/*,video/mp4" style="display:none" id="file-matin" onchange="loadFile('matin',this)">
-          <button class="glass-btn" style="margin-top:12px" onclick="document.getElementById('file-matin').click()">📂 Choisir le fichier</button>
-        </div>
-        <div id="player-matin" style="display:none">
-          <div class="progress-bar" id="prog-bar-matin" onclick="seekAudio('matin',event)">
-            <div class="progress-fill" id="prog-fill-matin" style="background:linear-gradient(90deg,#F59E0B,#FCD34D)"></div>
-          </div>
-          <div class="time-row"><span id="time-cur-matin">0:00</span><span id="time-tot-matin">--:--</span></div>
-          <div class="player-controls">
-            <button class="glass-btn" onclick="skipAudio('matin',-30)">⟪ 30s</button>
-            <button class="play-big" id="play-btn-matin" onclick="toggleAudio('matin')" style="background:linear-gradient(135deg,#F59E0B,#FCD34D);box-shadow:0 4px 20px rgba(245,158,11,.4)">▶</button>
-            <button class="glass-btn" onclick="skipAudio('matin',30)">30s ⟫</button>
-            <input type="range" min="0" max="1" step="0.05" value="0.85" style="width:60px;accent-color:#F59E0B;cursor:pointer" onchange="setVol('matin',this.value)">
-          </div>
-        </div>
-        <audio id="audio-matin"></audio>
-      </div>
+<!-- ═══════════════════════════════════════════════════
+     APP : CHECKLIST
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-app-checklist">
+  <button class="back-btn" onclick="go('app-dashboard')">← Choisir la prière</button>
+  <p class="acc" style="margin-bottom:4px" id="check-prayer-label">Subh · 2 Rak'at</p>
+  <h1 style="font-size:26px;font-weight:700;letter-spacing:-1px;margin-bottom:6px">Prêt à prier ?</h1>
+  <p style="font-size:13px;color:var(--txt-m);margin-bottom:4px">Coche chaque point pour activer le bouton de démarrage.</p>
 
-      <!-- SOIR -->
-      <div class="glass-card long-player">
-        <div class="lp-header">
-          <div class="lp-icon" style="background:linear-gradient(135deg,#5B5BD6,#10C98F)" id="lp-icon-soir">🌙</div>
-          <div>
-            <p style="font-size:10px;letter-spacing:2px;color:#7B7BF0;text-transform:uppercase;margin-bottom:3px">Omar Isham · ~25 min</p>
-            <p style="font-size:16px;font-weight:600;color:white">Invocations du Soir</p>
-            <p style="font-size:11px;color:var(--text-muted)">Adhkâr Al-Masâ'</p>
-          </div>
-        </div>
-        <p class="lp-desc">Les invocations du soir à réciter après la prière de 'Asr. Récitation complète par Omar Isham.</p>
-        <div class="file-placeholder" id="placeholder-soir">
-          <p style="font-size:24px;margin-bottom:8px">📁</p>
-          <p style="font-size:13px;font-weight:600;color:white;margin-bottom:6px">Ton fichier MP4 va ici</p>
-          <p style="font-size:11px">Glisse ton fichier MP3 ou MP4 sur cette zone<br>ou clique pour le sélectionner</p>
-          <input type="file" accept="audio/*,video/mp4" style="display:none" id="file-soir" onchange="loadFile('soir',this)">
-          <button class="glass-btn" style="margin-top:12px" onclick="document.getElementById('file-soir').click()">📂 Choisir le fichier</button>
-        </div>
-        <div id="player-soir" style="display:none">
-          <div class="progress-bar" id="prog-bar-soir" onclick="seekAudio('soir',event)">
-            <div class="progress-fill" id="prog-fill-soir" style="background:linear-gradient(90deg,#5B5BD6,#10C98F)"></div>
-          </div>
-          <div class="time-row"><span id="time-cur-soir">0:00</span><span id="time-tot-soir">--:--</span></div>
-          <div class="player-controls">
-            <button class="glass-btn" onclick="skipAudio('soir',-30)">⟪ 30s</button>
-            <button class="play-big" id="play-btn-soir" onclick="toggleAudio('soir')" style="background:linear-gradient(135deg,#5B5BD6,#10C98F);box-shadow:0 4px 20px rgba(91,91,214,.4)">▶</button>
-            <button class="glass-btn" onclick="skipAudio('soir',30)">30s ⟫</button>
-            <input type="range" min="0" max="1" step="0.05" value="0.85" style="width:60px;accent-color:#7B7BF0;cursor:pointer" onchange="setVol('soir',this.value)">
-          </div>
-        </div>
-        <audio id="audio-soir"></audio>
-      </div>
+  <div class="check-list" id="checklist">
+    <div class="check-item" onclick="toggleCheck(this,0)" id="ci0">
+      <div class="check-box" id="cb0"></div>
+      <div><div class="check-label">🧎 Tapis de prière</div><div class="check-sub">Je suis sur un espace propre et stable.</div></div>
     </div>
-
-    <!-- Imam Virtuel -->
-    <div class="glass-card" style="padding:16px">
-      <p class="section-label" style="margin-bottom:12px">Découvrir plus d'invocations</p>
-      <a href="https://limamvirtuel.com/invocations" target="_blank" class="imam-btn">
-        <div class="imam-btn-icon">☾</div>
-        <div>
-          <p style="font-size:10px;letter-spacing:2px;color:#10C98F;text-transform:uppercase;margin-bottom:3px">Ressource externe · Recommandé</p>
-          <p style="font-size:13px;font-weight:600;color:white">L'Imam Virtuel — Invocations</p>
-          <p style="font-size:11px;color:var(--text-muted)">limamvirtuel.com · Bibliothèque complète de Dou'as</p>
-        </div>
-        <span class="arrow">→</span>
-      </a>
+    <div class="check-item" onclick="toggleCheck(this,1)" id="ci1">
+      <div class="check-box" id="cb1"></div>
+      <div><div class="check-label">💧 Ablutions (Wudu)</div><div class="check-sub">Je suis en état de pureté rituelle.</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this,2)" id="ci2">
+      <div class="check-box" id="cb2"></div>
+      <div><div class="check-label">🧭 Direction de la Qibla</div><div class="check-sub">Je suis orienté vers La Mecque.</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this,3)" id="ci3">
+      <div class="check-box" id="cb3"></div>
+      <div><div class="check-label">🧠 Concentration (Khushu')</div><div class="check-sub">Je suis présent et serein, prêt à me connecter.</div></div>
     </div>
   </div>
 
-  <!-- Compteur tab -->
-  <div id="tab-compteur" style="display:none">
-    <div class="dhikr-grid">
-      <div class="glass-card counter-card" style="flex-direction:column">
-        <p class="arabic dhikr-arabic-big" id="dhikr-arabic" style="color:#7B7BF0"></p>
-        <p style="font-size:11px;letter-spacing:2px;color:var(--text-muted);margin-bottom:4px" id="dhikr-translit"></p>
-        <p style="font-size:13px;font-weight:600;color:white;margin-bottom:24px" id="dhikr-trans"></p>
-        <div class="ring-wrap">
-          <svg viewBox="0 0 120 120">
-            <defs>
-              <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" id="rg-s1" stop-color="#5B5BD6"/>
-                <stop offset="100%" id="rg-s2" stop-color="#7B7BF0"/>
-              </linearGradient>
-            </defs>
-            <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="6"/>
-            <circle cx="60" cy="60" r="54" fill="none" stroke="url(#rg)" stroke-width="6"
-              stroke-linecap="round" id="ring-circle"
-              stroke-dasharray="339.3" stroke-dashoffset="339.3"
-              style="transition:stroke-dashoffset .4s cubic-bezier(.34,1.56,.64,1)"/>
+  <div class="glass-card" style="padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:10px" id="check-progress-bar">
+    <span style="font-size:12px;color:var(--txt-m)">Progression :</span>
+    <div style="flex:1;height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,var(--indigo),var(--emerald));border-radius:4px;transition:width .3s" id="check-prog-fill" style="width:0%"></div></div>
+    <span style="font-size:12px;font-weight:600" id="check-prog-text">0/4</span>
+  </div>
+
+  <button class="launch-btn disabled" id="launch-btn" onclick="launchPrayer()">
+    🔊 Lancer la prière guidée
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     APP : PRIÈRE EN COURS
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-app-prayer">
+  <p class="acc" style="margin-bottom:4px" id="prayer-now-label">Subh · 2 Rak'at</p>
+  <h1 style="font-size:26px;font-weight:700;letter-spacing:-1px;margin-bottom:20px">Prière en cours</h1>
+
+  <div class="glass-card audio-player-card" style="margin-bottom:16px;border-color:rgba(91,91,214,.4);background:linear-gradient(135deg,rgba(91,91,214,.08),rgba(16,201,143,.05))">
+    <p class="now-playing">🔊 En lecture — Voix guidée</p>
+    <p class="track-title" id="pn-title">Introduction & Intention</p>
+    <p class="track-sub" id="pn-sub">Formule l'intention dans ton cœur</p>
+
+    <div class="waveform" id="waveform" style="display:none">
+      <div class="wv" style="height:8px;background:var(--indigo-l);animation-delay:0s"></div>
+      <div class="wv" style="height:18px;background:var(--indigo-l);animation-delay:.12s"></div>
+      <div class="wv" style="height:12px;background:var(--emerald);animation-delay:.06s"></div>
+      <div class="wv" style="height:22px;background:var(--emerald);animation-delay:.18s"></div>
+      <div class="wv" style="height:14px;background:var(--indigo-l);animation-delay:.09s"></div>
+      <div class="wv" style="height:20px;background:var(--indigo-l);animation-delay:.15s"></div>
+      <div class="wv" style="height:10px;background:var(--emerald);animation-delay:.03s"></div>
+    </div>
+
+    <div class="prog-wrap" id="prayer-prog"><div class="prog-fill" id="prayer-fill" style="background:linear-gradient(90deg,var(--indigo),var(--emerald))"></div></div>
+    <div class="time-row"><span id="pn-step">Étape <span id="pn-stepn">1</span> / <span id="pn-steptot">5</span></span><span id="pn-time"></span></div>
+
+    <div class="player-ctrl">
+      <button class="ctrl-sm" onclick="prevStep()">⏮</button>
+      <button class="ctrl-big" id="pn-play" onclick="togglePrayer()" style="background:linear-gradient(135deg,var(--indigo),var(--emerald))">▶</button>
+      <button class="ctrl-sm" onclick="nextStep()">⏭</button>
+    </div>
+  </div>
+
+  <!-- Rak'at counter -->
+  <div class="glass-card" style="padding:18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+    <div>
+      <p class="sec" style="margin-bottom:4px">Rak'at accomplis</p>
+      <p style="font-size:32px;font-weight:300;letter-spacing:-2px" id="rakat-done">0 <span style="font-size:16px;color:var(--txt-d)">/ <span id="rakat-total">2</span></span></p>
+    </div>
+    <button class="g-btn" onclick="addRakat()" style="font-size:18px;padding:12px 20px">+1</button>
+  </div>
+
+  <button class="g-btn" style="width:100%;padding:14px;color:var(--rose);border-color:rgba(244,63,94,.3)" onclick="endPrayer()">
+    ⏹ Terminer la prière
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     APP : BILAN (Success screen)
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-app-bilan">
+  <div class="glass-card bilan-card" style="border-color:rgba(16,201,143,.4);background:linear-gradient(135deg,rgba(16,201,143,.08),rgba(91,91,214,.06))">
+    <div class="bilan-icon">🌟</div>
+    <h1 class="bilan-title">Alhamdulillah !</h1>
+    <p class="bilan-sub">Tu as accompli ta prière de <strong id="bilan-prayer-name">Subh</strong>.<br>Qu'Allah l'accepte de toi.</p>
+
+    <p style="font-size:13px;font-weight:600;margin-bottom:16px">As-tu réussi ta prière ?</p>
+    <div class="bilan-btns">
+      <button class="btn-success" onclick="bilanOui()">✓ Oui, Alhamdulillah !</button>
+      <button class="btn-retry" onclick="bilanNon()">↺ Je voudrais recommencer</button>
+    </div>
+
+    <!-- Stats -->
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px">
+      <div class="glass-card" style="padding:14px 22px;text-align:center;min-width:100px">
+        <p style="font-size:24px;font-weight:300;color:var(--emerald)" id="bilan-rakat">0</p>
+        <p class="sec">Rak'at</p>
+      </div>
+      <div class="glass-card" style="padding:14px 22px;text-align:center;min-width:100px">
+        <p style="font-size:24px;font-weight:300;color:var(--indigo-l)" id="bilan-session">1</p>
+        <p class="sec">Session</p>
+      </div>
+      <div class="glass-card" style="padding:14px 22px;text-align:center;min-width:100px">
+        <p style="font-size:24px;font-weight:300;color:var(--amber)" id="total-prayers-done">0</p>
+        <p class="sec">Total</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review form -->
+  <div id="review-section" style="margin-top:20px;display:none">
+    <div class="glass-card" style="padding:24px">
+      <p style="font-size:14px;font-weight:600;margin-bottom:4px">Laisse ton avis</p>
+      <p style="font-size:12px;color:var(--txt-m);margin-bottom:16px">Ton témoignage aide d'autres musulmans à découvrir l'application.</p>
+      <p class="sec" style="margin-bottom:6px">Note</p>
+      <div class="review-stars" id="review-stars">
+        <span class="review-star" onclick="setStars(1)">★</span>
+        <span class="review-star" onclick="setStars(2)">★</span>
+        <span class="review-star" onclick="setStars(3)">★</span>
+        <span class="review-star" onclick="setStars(4)">★</span>
+        <span class="review-star lit" onclick="setStars(5)">★</span>
+      </div>
+      <p class="sec" style="margin-bottom:6px">Ton commentaire</p>
+      <textarea id="review-text" rows="3" placeholder="Ex : L'application m'a vraiment aidé à apprendre ma prière..."></textarea>
+      <p style="font-size:11px;color:var(--txt-d);margin:6px 0">Ton prénom (optionnel)</p>
+      <input type="text" id="review-name" placeholder="Ex : Fatima" style="width:100%;background:rgba(255,255,255,.05);border:.5px solid var(--border);border-radius:12px;padding:10px 14px;color:var(--txt);font-family:'Sora',sans-serif;font-size:13px;outline:none;transition:border-color .2s;margin-bottom:10px">
+      <button class="btn-review" onclick="submitReview()">Publier mon avis ★</button>
+    </div>
+  </div>
+
+  <div id="review-thanks" style="display:none;margin-top:16px">
+    <div class="glass-card" style="padding:20px;text-align:center;border-color:rgba(16,201,143,.35)">
+      <p style="font-size:20px;margin-bottom:6px">🌿</p>
+      <p style="font-size:13px;font-weight:600;margin-bottom:4px">Barak Allah oufik !</p>
+      <p style="font-size:12px;color:var(--txt-m)">Ton avis a été enregistré. Qu'Allah te récompense pour ce partage.</p>
+    </div>
+  </div>
+
+  <div class="reviews-list" id="reviews-list" style="margin-top:16px"></div>
+
+  <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+    <button class="cta-hero" style="font-size:13px;padding:12px 24px" onclick="go('app-dashboard')">🕌 Nouvelle prière</button>
+    <button class="g-btn" onclick="go('app-dhikr')">∞ Faire le Dhikr</button>
+    <button class="g-btn" onclick="go('landing')">← Accueil</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     APP : DHIKR
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-app-dhikr">
+  <button class="back-btn" onclick="go('app-parcours')">← Parcours</button>
+  <p class="acc" style="margin-bottom:4px">Dhikr & Invocations</p>
+  <h1 style="font-size:28px;font-weight:700;letter-spacing:-1px;margin-bottom:6px">Le souvenir d'Allah</h1>
+  <p style="font-size:13px;color:var(--txt-m);margin-bottom:28px">Compteur interactif · Invocations Matin & Soir par Omar Isham</p>
+
+  <div style="display:flex;gap:4px;padding:6px;border-radius:20px;background:var(--glass);border:.5px solid var(--border);width:fit-content;margin-bottom:28px">
+    <button class="tab-btn active" id="dtab1" onclick="switchDhikrTab('compteur',this)" style="padding:10px 20px;border-radius:14px;border:none;font-family:'Sora',sans-serif;font-size:12px;cursor:pointer;transition:all .25s;background:var(--glass-card);border:.5px solid var(--border);color:var(--txt)">☽ Compteur</button>
+    <button class="tab-btn" id="dtab2" onclick="switchDhikrTab('invocations',this)" style="padding:10px 20px;border-radius:14px;border:none;font-family:'Sora',sans-serif;font-size:12px;cursor:pointer;transition:all .25s;background:transparent;border:.5px solid transparent;color:var(--txt-m)">🌅 Invocations</button>
+  </div>
+
+  <!-- Compteur -->
+  <div id="dhikr-tab-compteur">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="glass-card" style="padding:28px;display:flex;flex-direction:column;align-items:center;text-align:center">
+        <p class="arabic" style="font-size:clamp(22px,4vw,34px);color:var(--indigo-l);line-height:1.8;margin-bottom:6px" id="d-arabic">سُبْحَانَ اللَّهِ</p>
+        <p style="font-size:10px;letter-spacing:2px;color:var(--txt-m);margin-bottom:3px" id="d-translit">SubhanAllah</p>
+        <p style="font-size:12px;font-weight:600;margin-bottom:20px" id="d-trans">Gloire à Allah</p>
+        <div style="position:relative;width:140px;height:140px;margin-bottom:16px">
+          <svg viewBox="0 0 120 120" style="position:absolute;inset:0;width:140px;height:140px;transform:rotate(-90deg)">
+            <defs><linearGradient id="rg2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" id="rg2s1" stop-color="#5B5BD6"/><stop offset="100%" id="rg2s2" stop-color="#7B7BF0"/></linearGradient></defs>
+            <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="6"/>
+            <circle cx="60" cy="60" r="54" fill="none" stroke="url(#rg2)" stroke-width="6" stroke-linecap="round" id="d-ring" stroke-dasharray="339.3" stroke-dashoffset="339.3" style="transition:stroke-dashoffset .4s cubic-bezier(.34,1.56,.64,1)"/>
           </svg>
-          <button class="tap-btn" id="tap-btn" onclick="tap()" style="border-color:rgba(91,91,214,.4)">
-            <span>☽</span><span style="font-size:9px;letter-spacing:2px;color:var(--text-dim)">TAP</span>
+          <button onclick="tapDhikr()" style="position:absolute;inset:10px;border-radius:50%;border:.5px solid rgba(91,91,214,.4);background:var(--glass-card);cursor:pointer;font-size:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-family:'Sora',sans-serif;transition:transform .15s" id="d-tap-btn" onmousedown="this.style.transform='scale(.88)'" onmouseup="this.style.transform='scale(1)'">
+            ☽<span style="font-size:8px;letter-spacing:2px;color:var(--txt-d)">TAP</span>
           </button>
         </div>
-        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
-          <span class="count-big" id="dhikr-count" style="background:linear-gradient(135deg,#fff,#7B7BF0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">0</span>
-          <span style="font-size:20px;font-weight:300;color:var(--text-dim)" id="dhikr-target-display">/ 33</span>
+        <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:16px">
+          <span style="font-size:52px;font-weight:300;letter-spacing:-3px;background:linear-gradient(135deg,#fff,var(--indigo-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text" id="d-count">0</span>
+          <span style="font-size:18px;color:var(--txt-d)">/ <span id="d-target">33</span></span>
         </div>
-        <p id="done-msg" style="font-size:12px;color:#7B7BF0;display:none;margin-bottom:8px">✦ Alhamdulillah — Terminé !</p>
-        <button class="glass-btn" onclick="speakDhikr()" style="margin-bottom:16px;display:flex;align-items:center;gap:6px">
-          🔊 <span id="tts-label">Écouter la prononciation</span>
-        </button>
-        <div style="display:flex;gap:8px">
-          <button class="glass-btn" onclick="changeDhikr(-1)">← Préc</button>
-          <button class="glass-btn" onclick="resetCount()">↺ Reset</button>
-          <button class="glass-btn" onclick="changeDhikr(1)">Suiv →</button>
+        <p id="d-done" style="font-size:11px;color:var(--emerald);display:none;margin-bottom:10px">✦ Alhamdulillah !</p>
+        <button class="g-btn" style="font-size:11px;margin-bottom:12px" onclick="speakDhikrAr()">🔊 Prononciation</button>
+        <div style="display:flex;gap:6px">
+          <button class="g-btn" style="font-size:11px" onclick="chD(-1)">← Préc</button>
+          <button class="g-btn" style="font-size:11px" onclick="resetD()">↺</button>
+          <button class="g-btn" style="font-size:11px" onclick="chD(1)">Suiv →</button>
         </div>
       </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="glass-card" style="padding:16px"><p class="sec" style="margin-bottom:6px">Vertu</p><p style="font-size:12px;color:var(--txt-m);line-height:1.7" id="d-virtue">Chaque répétition plante un palmier au Paradis.</p></div>
+        <div class="glass-card" style="padding:16px"><p class="sec" style="margin-bottom:4px">Sessions</p><p style="font-size:32px;font-weight:300;color:var(--txt-d)" id="d-sessions">0</p></div>
+        <div class="glass-card" style="padding:14px">
+          <p class="sec" style="margin-bottom:10px">Formules</p>
+          <div id="d-list" style="display:flex;flex-direction:column;gap:6px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      <div class="dhikr-right">
-        <div class="glass-card info-card">
-          <p class="section-label" style="margin-bottom:8px">Vertu</p>
-          <p style="font-size:12px;color:var(--text-muted);line-height:1.7" id="dhikr-virtue"></p>
+  <!-- Invocations -->
+  <div id="dhikr-tab-invocations" style="display:none">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px">
+      <div class="glass-card" style="padding:22px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,#F59E0B,#FCD34D);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🌄</div>
+          <div><p style="font-size:10px;letter-spacing:2px;color:#F59E0B;text-transform:uppercase;margin-bottom:2px">Omar Isham · ~25 min</p><p style="font-size:15px;font-weight:600;color:white">Invocations du Matin</p><p style="font-size:11px;color:var(--txt-m)">Adhkâr As-Sabâh</p></div>
         </div>
-        <div class="glass-card info-card">
-          <p class="section-label" style="margin-bottom:4px">Sessions</p>
-          <p style="font-size:40px;font-weight:300;color:var(--text-dim)" id="sessions-count">0</p>
+        <p style="font-size:12px;color:var(--txt-m);line-height:1.7;margin-bottom:16px">À réciter après Fajr jusqu'au lever du soleil. Récitation complète.</p>
+        <div id="ph-matin">
+          <input type="file" accept="audio/*,video/*" style="display:none" id="fi-matin" onchange="loadLongAudio('matin',this)">
+          <button class="g-btn" style="width:100%;justify-content:center;display:flex;gap:8px" onclick="document.getElementById('fi-matin').click()">📂 Charger mon fichier MP3/MP4</button>
         </div>
-        <div class="glass-card info-card">
-          <p class="section-label" style="margin-bottom:12px">Toutes les formules</p>
-          <div id="dhikr-list" style="display:flex;flex-direction:column;gap:6px"></div>
+        <div id="lp-matin" style="display:none">
+          <div class="prog-wrap" onclick="seekLP('matin',event)"><div class="prog-fill" id="lpf-matin" style="background:linear-gradient(90deg,#F59E0B,#FCD34D)"></div></div>
+          <div class="time-row"><span id="lpt-matin">0:00</span><span id="lpd-matin">--:--</span></div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:10px">
+            <button class="g-btn" style="font-size:11px" onclick="skipLP('matin',-30)">⟪ 30s</button>
+            <button class="ctrl-big" id="lpb-matin" onclick="toggleLP('matin')" style="width:48px;height:48px;background:linear-gradient(135deg,#F59E0B,#FCD34D);font-size:16px">▶</button>
+            <button class="g-btn" style="font-size:11px" onclick="skipLP('matin',30)">30s ⟫</button>
+          </div>
         </div>
+        <audio id="lpa-matin"></audio>
       </div>
+      <div class="glass-card" style="padding:22px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,#5B5BD6,#10C98F);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🌙</div>
+          <div><p style="font-size:10px;letter-spacing:2px;color:#7B7BF0;text-transform:uppercase;margin-bottom:2px">Omar Isham · ~25 min</p><p style="font-size:15px;font-weight:600;color:white">Invocations du Soir</p><p style="font-size:11px;color:var(--txt-m)">Adhkâr Al-Masâ'</p></div>
+        </div>
+        <p style="font-size:12px;color:var(--txt-m);line-height:1.7;margin-bottom:16px">À réciter après 'Asr jusqu'au coucher du soleil. Récitation complète.</p>
+        <div id="ph-soir">
+          <input type="file" accept="audio/*,video/*" style="display:none" id="fi-soir" onchange="loadLongAudio('soir',this)">
+          <button class="g-btn" style="width:100%;justify-content:center;display:flex;gap:8px" onclick="document.getElementById('fi-soir').click()">📂 Charger mon fichier MP3/MP4</button>
+        </div>
+        <div id="lp-soir" style="display:none">
+          <div class="prog-wrap" onclick="seekLP('soir',event)"><div class="prog-fill" id="lpf-soir" style="background:linear-gradient(90deg,#5B5BD6,#10C98F)"></div></div>
+          <div class="time-row"><span id="lpt-soir">0:00</span><span id="lpd-soir">--:--</span></div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:10px">
+            <button class="g-btn" style="font-size:11px" onclick="skipLP('soir',-30)">⟪ 30s</button>
+            <button class="ctrl-big" id="lpb-soir" onclick="toggleLP('soir')" style="width:48px;height:48px;background:linear-gradient(135deg,#5B5BD6,#10C98F);font-size:16px">▶</button>
+            <button class="g-btn" style="font-size:11px" onclick="skipLP('soir',30)">30s ⟫</button>
+          </div>
+        </div>
+        <audio id="lpa-soir"></audio>
+      </div>
+    </div>
+    <div class="glass-card" style="padding:16px">
+      <p class="sec" style="margin-bottom:10px">Plus d'invocations</p>
+      <a href="https://limamvirtuel.com/invocations" target="_blank" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;border:.5px solid rgba(91,91,214,.3);background:linear-gradient(135deg,rgba(91,91,214,.08),rgba(16,201,143,.05));text-decoration:none;transition:all .2s" onmouseover="this.style.borderColor='rgba(91,91,214,.5)'" onmouseout="this.style.borderColor='rgba(91,91,214,.3)'">
+        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#5B5BD6,#10C98F);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">☾</div>
+        <div><p style="font-size:11px;color:var(--emerald);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Ressource externe</p><p style="font-size:13px;font-weight:600;color:white">L'Imam Virtuel — Invocations complètes</p><p style="font-size:11px;color:var(--txt-m)">limamvirtuel.com</p></div>
+        <span style="margin-left:auto;color:var(--txt-d);font-size:18px">→</span>
+      </a>
     </div>
   </div>
 </div>
 
 </main>
 
-<!-- AUDIO BAR -->
+<!-- Audio bar -->
 <div id="audio-bar">
-  <div class="audio-bar-inner">
-    <div style="flex:1;min-width:0">
-      <p style="font-size:10px;letter-spacing:2px;color:var(--emerald);text-transform:uppercase;margin-bottom:2px" id="bar-label">En lecture</p>
-      <p style="font-size:13px;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="bar-title">—</p>
-    </div>
-    <div class="wave" id="bar-wave" style="display:none">
-      <div class="wave-bar" style="height:8px;background:var(--emerald);animation-delay:0s"></div>
-      <div class="wave-bar" style="height:14px;background:var(--emerald);animation-delay:.1s"></div>
-      <div class="wave-bar" style="height:10px;background:var(--emerald);animation-delay:.2s"></div>
-      <div class="wave-bar" style="height:16px;background:var(--emerald);animation-delay:.15s"></div>
-      <div class="wave-bar" style="height:10px;background:var(--emerald);animation-delay:.05s"></div>
-    </div>
-    <button id="bar-stop" class="glass-btn" onclick="stopAll()">⏹ Arrêter</button>
+  <div class="ab-inner">
+    <div class="ab-dot"></div>
+    <div class="ab-info"><p class="ab-label" id="ab-lbl">En lecture</p><p class="ab-title" id="ab-ttl">—</p></div>
+    <button class="g-btn" onclick="stopAll()" style="flex-shrink:0">⏹ Stop</button>
   </div>
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────────────────────
-const DHIKR = [
-  {arabic:'سُبْحَانَ اللَّهِ',translit:'SubhanAllah',trans:'Gloire à Allah',virtue:'Chaque répétition plante un palmier au Paradis.',target:33,tts:'سبحان الله',color:['#5B5BD6','#7B7BF0'],border:'rgba(91,91,214,.4)',bg:'rgba(91,91,214,.15)',text:'#7B7BF0'},
-  {arabic:'الْحَمْدُ لِلَّهِ',translit:'Alhamdulillah',trans:'Toute louange est due à Allah',virtue:'Remplit la balance des bonnes œuvres.',target:33,tts:'الحمد لله',color:['#10C98F','#5EEAD4'],border:'rgba(16,201,143,.35)',bg:'rgba(16,201,143,.12)',text:'#10C98F'},
-  {arabic:'اللَّهُ أَكْبَرُ',translit:'Allahu Akbar',trans:'Allah est le plus grand',virtue:'Remplit l\'espace entre le ciel et la terre.',target:33,tts:'الله أكبر',color:['#F59E0B','#FCD34D'],border:'rgba(245,158,11,.35)',bg:'rgba(245,158,11,.12)',text:'#F59E0B'},
-  {arabic:'لَا إِلَهَ إِلَّا اللَّهُ',translit:'Lā ilāha illAllāh',trans:'Il n\'y a de dieu qu\'Allah',virtue:'La meilleure formule de Dhikr.',target:100,tts:'لا إله إلا الله',color:['#F43F5E','#FB7185'],border:'rgba(244,63,94,.35)',bg:'rgba(244,63,94,.12)',text:'#F43F5E'},
-  {arabic:'أَسْتَغْفِرُ اللَّهَ',translit:'AstaghfirAllah',trans:'Je demande pardon à Allah',virtue:'Ouvre les portes de la miséricorde divine.',target:100,tts:'أستغفر الله',color:['#5B5BD6','#7B7BF0'],border:'rgba(91,91,214,.4)',bg:'rgba(91,91,214,.15)',text:'#7B7BF0'},
-  {arabic:'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ',translit:'Allahumma Salli ʿalā Muḥammad',trans:'Ô Allah, bénis Muhammad',virtue:'Allah envoie 10 bénédictions à celui qui la prononce.',target:10,tts:'اللهم صل على محمد',color:['#10C98F','#5EEAD4'],border:'rgba(16,201,143,.35)',bg:'rgba(16,201,143,.12)',text:'#10C98F'},
+// ════════════════════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════════════════════
+const WUDU=[
+  {t:'L\'intention (Niyyah)',d:'Formuler l\'intention dans le cœur — purification pour la prière.'},
+  {t:'Bismillah',d:'Commencer en prononçant le nom d\'Allah.'},
+  {t:'Les mains',d:'Se laver les deux mains jusqu\'aux poignets, 3 fois.'},
+  {t:'La bouche et le nez',d:'Se rincer la bouche 3 fois, puis se moucher 3 fois.'},
+  {t:'Le visage',d:'Laver le visage de haut en bas et d\'oreille en oreille, 3 fois.'},
+  {t:'Les avant-bras',d:'De la main jusqu\'aux coudes inclus, 3 fois. Droit d\'abord.'},
+  {t:'La tête et les oreilles',d:'Passer les mains humides sur la tête une fois, puis les oreilles.'},
+  {t:'Les pieds',d:'Laver les pieds jusqu\'aux chevilles, 3 fois. Droit d\'abord.'},
 ];
-const GESTES = [
-  {name:'Qiyam',sub:'La station debout',sym:'⏐',color:'#7B7BF0',desc:'Se tenir debout, les bras croisés sur la poitrine (main droite sur la gauche). Regard vers le lieu de prosternation. C\'est la position de départ de chaque rak\'at.',tts:'Le Qiyam est la position debout. On se tient droit, les mains croisées sur la poitrine.'},
-  {name:'Ruku\'',sub:'L\'inclinaison',sym:'⌐',color:'#10C98F',desc:'S\'incliner jusqu\'à ce que le dos soit horizontal. Les mains saisissent les genoux. Dire SubhanaRabbi al-Adhim 3 fois.',tts:'Le Ruku est l\'inclinaison. Le dos doit être horizontal, les mains sur les genoux.'},
-  {name:'I\'tidal',sub:'Le redressement',sym:'⏐',color:'#F59E0B',desc:'Se relever complètement après le ruku\'. Dire : Sami Allah liman hamidah, puis Rabbana lakal hamd.',tts:'L\'I\'tidal est le redressement complet après l\'inclinaison.'},
-  {name:'Sujud',sub:'La prosternation',sym:'⌒',color:'#F43F5E',desc:'Se prosterner sur 7 points d\'appui : le front et le nez, les deux paumes, les deux genoux, les extrémités des deux pieds. Dire SubhanaRabbi al-A\'la 3 fois.',tts:'Le Sujud est la prosternation. Sept points de contact avec le sol.'},
-  {name:'Julus',sub:'La position assise',sym:'⊓',color:'#7B7BF0',desc:'S\'asseoir entre les deux prosternations sur le pied gauche replié. Les mains sur les genoux. Dire : Rabbi ghfirli.',tts:'Le Julus est la position assise entre les deux prosternations.'},
-  {name:'Tashahhud',sub:'L\'attestation finale',sym:'⊔',color:'#10C98F',desc:'Position assise finale. On lève l\'index droit au moment du Tashahhud. Puis on tourne la tête à droite puis à gauche pour le Salam.',tts:'Le Tashahhud est la position assise finale. On termine la prière par le Salam des deux côtés.'},
+const GESTES=[
+  {n:'Qiyam',s:'La station debout',sym:'⏐',c:'#7B7BF0',d:'Se tenir debout, les bras croisés sur la poitrine. Regard vers le lieu de prosternation. C\'est la position de départ de chaque rak\'at.',tts:'Le Qiyam est la position debout. On se tient droit, les mains croisées sur la poitrine.'},
+  {n:'Ruku\'',s:'L\'inclinaison',sym:'⌐',c:'#10C98F',d:'S\'incliner jusqu\'à ce que le dos soit horizontal. Les mains saisissent les genoux. Dire SubhanaRabbi al-Adhim 3 fois.',tts:'Le Ruku est l\'inclinaison. Le dos doit être horizontal, les mains sur les genoux.'},
+  {n:'I\'tidal',s:'Le redressement',sym:'⏐',c:'#F59E0B',d:'Se relever complètement après le ruku\'. Dire Sami Allah liman hamidah, puis Rabbana lakal hamd.',tts:'L\'I\'tidal est le redressement complet après l\'inclinaison.'},
+  {n:'Sujud',s:'La prosternation',sym:'⌒',c:'#F43F5E',d:'Se prosterner sur 7 points d\'appui : le front, le nez, les deux paumes, les deux genoux, les extrémités des deux pieds. Dire SubhanaRabbi al-A\'la 3 fois.',tts:'Le Sujud est la prosternation sur sept points de contact.'},
+  {n:'Julus',s:'La position assise',sym:'⊓',c:'#7B7BF0',d:'S\'asseoir entre les deux prosternations sur le pied gauche replié. Les mains sur les genoux. Dire Rabbi ghfirli.',tts:'Le Julus est la position assise entre les deux prosternations.'},
+  {n:'Tashahhud',s:'L\'attestation finale',sym:'⊔',c:'#10C98F',d:'Position assise finale. On lève l\'index droit au moment du Tashahhud, puis on tourne la tête à droite et à gauche pour le Salam.',tts:'Le Tashahhud est la position assise finale. On termine la prière par le Salam.'},
+];
+const PRAYERS=[
+  {id:'subh',n:'Subh',ar:'صبح',time:'Al-Fajr · Aube',rakat:2,c:'#F59E0B',gc:'rgba(245,158,11',ico:'🌄',
+    steps:[{t:'Intention',s:'Formule ton intention pour la prière de Subh — 2 rak\'at — en direction de La Mecque.',tts:'Formule maintenant ton intention dans ton cœur pour la prière de l\'aube. Deux rak\'at, face à La Mecque, pour l\'amour d\'Allah.'},{t:'Takbir d\'ouverture',s:'Lève les mains à hauteur des oreilles et dis : Allahu Akbar.',tts:'Lève maintenant les mains à hauteur des oreilles et prononce, avec conviction : Allahu Akbar. Allah est le plus grand.'},{t:'Al-Fatiha',s:'Récite la sourate Al-Fatiha, puis une autre sourate.',tts:'Récite maintenant la sourate Al-Fatiha. Bismillahir rahmanir rahim. Alhamdu lillahi rabbil alamin. Ar-rahmanir rahim. Maliki yawmid din. Iyyaka na\'budu wa iyyaka nasta\'in. Ihdinas siratal mustaqim. Siratal ladhina an\'amta alayhim. Ghayril maghdubi alayhim. Wala ad-dalin. Amine.'},{t:'Ruku\' et Sujud',s:'Effectue l\'inclinaison, le redressement, puis les deux prosternations.',tts:'Incline-toi maintenant pour le Ruku. Dis trois fois Soubhana rabbi al adhim. Relève-toi et dis Sami Allah liman hamidah. Puis prosternes-toi, dis trois fois Soubhana rabbi al a\'la.'},{t:'Tashahhud & Salam',s:'Assieds-toi pour le Tashahhud final, puis termine par le Salam.',tts:'Assieds-toi maintenant pour le Tashahhud. Attahiyyatu lillahi wassalawatu wattayyibat. Assalamu alayka ayyuhan nabiyyu wa rahmatullahi wa barakatuh. Assalamu alayna wa ala ibadillahis salihin. Ash\'hadu an la ilaha illallah wa ash\'hadu anna muhammadan abduhu wa rasuluh. Termine ta prière en tournant la tête à droite : Assalamu alaykum wa rahmatullah. Puis à gauche. Ta prière est accomplie.'}]
+  },
+  {id:'dhuhr',n:'Dhuhr',ar:'ظهر',time:'Mi-journée',rakat:4,c:'#10C98F',gc:'rgba(16,201,143',ico:'☀️',
+    steps:[{t:'Intention',s:'Formule ton intention pour la prière de Dhuhr — 4 rak\'at.',tts:'Formule ton intention pour la prière de Dhuhr, quatre rak\'at, en direction de La Mecque.'},{t:'Takbir & Fatiha',s:'Allahu Akbar — puis récite Al-Fatiha et une sourate.',tts:'Allahu Akbar. Récite Al-Fatiha puis une sourate de ton choix.'},{t:'Rak\'at 1 et 2',s:'Effectue le ruku\', le redressement et les deux prosternations — deux fois.',tts:'Effectue le ruku\', le redressement, et les deux prosternations. Assieds-toi pour le premier Tashahhud.'},{t:'Rak\'at 3 et 4',s:'Lève-toi pour les deux derniers rak\'at.',tts:'Lève-toi pour le troisième rak\'at. Récite Al-Fatiha. Effectue le ruku\' et les prosternations. Puis le quatrième rak\'at de la même manière.'},{t:'Salam final',s:'Tashahhud complet, salutations sur le Prophète, puis Salam.',tts:'Lis maintenant le Tashahhud complet et les salutations sur le Prophète Mohammad, paix et bénédictions sur lui. Puis termine par le Salam des deux côtés.'}]
+  },
+  {id:'asr',n:'Asr',ar:'عصر',time:'Après-midi',rakat:4,c:'#7B7BF0',gc:'rgba(91,91,214',ico:'🌤️',
+    steps:[{t:'Intention',s:'Formule ton intention pour la prière de Asr — 4 rak\'at.',tts:'Formule ton intention pour la prière de Asr, quatre rak\'at.'},{t:'Takbir & Fatiha',s:'Allahu Akbar — puis Al-Fatiha.',tts:'Allahu Akbar. Récite Al-Fatiha.'},{t:'Rak\'at 1 et 2',s:'Ruku\', prosternations — puis premier Tashahhud.',tts:'Effectue le ruku\' et les deux prosternations. Assieds-toi pour le premier Tashahhud.'},{t:'Rak\'at 3 et 4',s:'Continue pour les deux derniers rak\'at.',tts:'Lève-toi pour les rak\'at trois et quatre. Même déroulement — Al-Fatiha, ruku\', prosternations.'},{t:'Salam',s:'Termine avec le Tashahhud complet et le Salam.',tts:'Termine avec le Tashahhud complet et le Salam des deux côtés. Qu\'Allah accepte ta prière.'}]
+  },
+  {id:'maghrib',n:'Maghrib',ar:'مغرب',time:'Coucher du soleil',rakat:3,c:'#F43F5E',gc:'rgba(244,63,94',ico:'🌅',
+    steps:[{t:'Intention',s:'Formule ton intention pour le Maghrib — 3 rak\'at.',tts:'Formule ton intention pour la prière du Maghrib, trois rak\'at.'},{t:'Takbir & Fatiha',s:'Allahu Akbar — puis Al-Fatiha et une sourate.',tts:'Allahu Akbar. Récite Al-Fatiha et une sourate.'},{t:'Rak\'at 1 et 2',s:'Ruku\', prosternations — puis premier Tashahhud.',tts:'Effectue le ruku\' et les prosternations. Assieds-toi pour le premier Tashahhud.'},{t:'Rak\'at 3',s:'Un dernier rak\'at — Al-Fatiha seulement.',tts:'Lève-toi pour le troisième rak\'at. Récite Al-Fatiha uniquement. Puis le ruku\' et les prosternations.'},{t:'Salam',s:'Tashahhud complet et Salam.',tts:'Lis le Tashahhud complet. Puis tourne la tête à droite et à gauche pour le Salam. Barak Allah oufik.'}]
+  },
+  {id:'isha',n:'Isha',ar:'عشاء',time:'La nuit',rakat:4,c:'#5B5BD6',gc:'rgba(91,91,214',ico:'🌙',
+    steps:[{t:'Intention',s:'Formule ton intention pour Isha — 4 rak\'at.',tts:'Formule ton intention pour la prière de Isha, quatre rak\'at, en direction de La Mecque.'},{t:'Takbir & Fatiha',s:'Allahu Akbar — puis Al-Fatiha.',tts:'Allahu Akbar. Récite Al-Fatiha puis une sourate.'},{t:'Rak\'at 1 et 2',s:'Ruku\', prosternations, premier Tashahhud.',tts:'Effectue le ruku\' et les prosternations pour les deux premiers rak\'at. Assieds-toi pour le Tashahhud intermédiaire.'},{t:'Rak\'at 3 et 4',s:'Les deux derniers rak\'at avec Al-Fatiha.',tts:'Lève-toi pour les rak\'at trois et quatre. Récite Al-Fatiha. Effectue le ruku\' et les prosternations.'},{t:'Salam final',s:'Tashahhud complet, salutations sur le Prophète, Salam.',tts:'Termine par le Tashahhud complet, les salutations sur le Prophète, puis le Salam. Que cette nuit soit bénie pour toi.'}]
+  },
+];
+const DHIKR=[
+  {ar:'سُبْحَانَ اللَّهِ',tr:'SubhanAllah',trs:'Gloire à Allah',v:'Chaque répétition plante un palmier au Paradis.',n:33,tts:'سبحان الله',c:['#5B5BD6','#7B7BF0'],bc:'rgba(91,91,214,.4)',bg:'rgba(91,91,214,.15)',tc:'#7B7BF0'},
+  {ar:'الْحَمْدُ لِلَّهِ',tr:'Alhamdulillah',trs:'Toute louange est due à Allah',v:'Remplit la balance des bonnes œuvres.',n:33,tts:'الحمد لله',c:['#10C98F','#5EEAD4'],bc:'rgba(16,201,143,.35)',bg:'rgba(16,201,143,.12)',tc:'#10C98F'},
+  {ar:'اللَّهُ أَكْبَرُ',tr:'Allahu Akbar',trs:'Allah est le plus grand',v:'Remplit l\'espace entre le ciel et la terre.',n:33,tts:'الله أكبر',c:['#F59E0B','#FCD34D'],bc:'rgba(245,158,11,.35)',bg:'rgba(245,158,11,.12)',tc:'#F59E0B'},
+  {ar:'لَا إِلَهَ إِلَّا اللَّهُ',tr:'Lā ilāha illAllāh',trs:'Il n\'y a de dieu qu\'Allah',v:'La meilleure formule de Dhikr.',n:100,tts:'لا إله إلا الله',c:['#F43F5E','#FB7185'],bc:'rgba(244,63,94,.35)',bg:'rgba(244,63,94,.12)',tc:'#F43F5E'},
+  {ar:'أَسْتَغْفِرُ اللَّهَ',tr:'AstaghfirAllah',trs:'Je demande pardon à Allah',v:'Ouvre les portes de la miséricorde divine.',n:100,tts:'أستغفر الله',c:['#5B5BD6','#7B7BF0'],bc:'rgba(91,91,214,.4)',bg:'rgba(91,91,214,.15)',tc:'#7B7BF0'},
+  {ar:'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ',tr:'Allahumma Salli ʿalā Muḥammad',trs:'Ô Allah, bénis Muhammad',v:'Allah envoie 10 bénédictions à celui qui la prononce.',n:10,tts:'اللهم صل على محمد',c:['#10C98F','#5EEAD4'],bc:'rgba(16,201,143,.35)',bg:'rgba(16,201,143,.12)',tc:'#10C98F'},
 ];
 
-// ── STATE ─────────────────────────────────────────────────────────────────────
-let dhikrIdx=0, count=0, sessions=0;
-let currentGeste=0;
-const audios = {matin: document.getElementById('audio-matin'), soir: document.getElementById('audio-soir')};
-let activeAudio = null;
+// ════════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════════
+let selectedPrayer=null, checksDone=[false,false,false,false];
+let pSteps=[], pStep=0, pRakat=0, pPlaying=false, pUtter=null, pTimer=null;
+let dIdx=0, dCount=0, dSessions=0;
+let gIdx=0;
+let stepsCompleted=[false,false,false,false];
+let totalPrayersDone=0;
+let reviews=[];
+let reviewStars=5;
+let lpAudios={matin:null,soir:null};
 
-// ── PAGES ─────────────────────────────────────────────────────────────────────
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p=>{p.classList.remove('active')});
-  document.getElementById('page-'+id).classList.add('active');
-  document.querySelectorAll('.nav-tab').forEach(t=>{
-    t.classList.toggle('active', t.textContent.toLowerCase().includes(id) || (id==='accueil' && t.textContent==='Accueil'));
+// ════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════════════════════
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el=document.getElementById('page-'+id);
+  if(el) el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ════════════════════════════════════════════════════════════════
+// TTS
+// ════════════════════════════════════════════════════════════════
+let ttsActive=false;
+function speak(text,lang='fr-FR',onEnd=null){
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang=lang; u.rate=0.86; u.pitch=0.96; u.volume=0.92;
+  const vs=window.speechSynthesis.getVoices();
+  const pref=vs.find(v=>v.lang.startsWith(lang.split('-')[0])&&v.localService)||vs.find(v=>v.lang.startsWith(lang.split('-')[0]));
+  if(pref) u.voice=pref;
+  u.onstart=()=>{ttsActive=true;showBar('Voix guidée',text.substring(0,40)+'…')};
+  u.onend=()=>{ttsActive=false;if(!pPlaying)hideBar();if(onEnd)onEnd()};
+  u.onerror=()=>{ttsActive=false;if(onEnd)onEnd()};
+  window.speechSynthesis.speak(u);
+  pUtter=u;
+}
+function stopAll(){window.speechSynthesis&&window.speechSynthesis.cancel();ttsActive=false;pPlaying=false;document.getElementById('pn-play').textContent='▶';document.getElementById('waveform').style.display='none';hideBar();Object.keys(lpAudios).forEach(k=>{const a=document.getElementById('lpa-'+k);if(a&&!a.paused){a.pause();document.getElementById('lpb-'+k).textContent='▶';}});}
+
+// ════════════════════════════════════════════════════════════════
+// WUDU STEPS RENDER
+// ════════════════════════════════════════════════════════════════
+function renderWudu(){
+  document.getElementById('wudu-steps').innerHTML=WUDU.map((s,i)=>`
+    <li style="display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:.5px solid rgba(255,255,255,.05)${i===WUDU.length-1?';border-bottom:none':''}">
+      <div style="width:26px;height:26px;border-radius:50%;flex-shrink:0;background:rgba(91,91,214,.18);border:.5px solid rgba(91,91,214,.4);color:#7B7BF0;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:2px">${i+1}</div>
+      <div><p style="font-size:13px;font-weight:600;color:white;margin-bottom:3px">${s.t}</p><p style="font-size:12px;color:var(--txt-m);line-height:1.6">${s.d}</p></div>
+      <button onclick="speak('${s.d}')" style="margin-left:auto;padding:5px 10px;border-radius:12px;border:.5px solid var(--border);background:var(--glass);color:var(--txt-d);cursor:pointer;font-size:10px;flex-shrink:0;font-family:'Sora',sans-serif;transition:all .2s" onmouseover="this.style.color='var(--txt)'" onmouseout="this.style.color='var(--txt-d)'">🔊</button>
+    </li>`).join('');
+}
+
+// ════════════════════════════════════════════════════════════════
+// GESTES
+// ════════════════════════════════════════════════════════════════
+function renderGesteTabs(){
+  document.getElementById('geste-tabs').innerHTML=GESTES.map((g,i)=>`
+    <button onclick="showG(${i},this)" style="padding:8px 16px;border-radius:14px;border:.5px solid ${i===0?g.c+'88':'var(--border)'};background:${i===0?g.c+'18':'var(--glass-card)'};color:${i===0?g.c:'var(--txt-m)'};cursor:pointer;font-family:'Sora',sans-serif;font-size:12px;transition:all .2s" id="gtab${i}">${g.n}</button>`).join('');
+}
+function showG(i,btn){
+  gIdx=i; const g=GESTES[i];
+  document.getElementById('g-sym').textContent=g.sym;
+  document.getElementById('g-sym').style.color=g.c;
+  document.getElementById('g-name').textContent=g.n;
+  document.getElementById('g-sub').textContent=g.s;
+  document.getElementById('g-sub').style.color=g.c;
+  document.getElementById('g-desc').textContent=g.d;
+  document.querySelectorAll('[id^=gtab]').forEach((t,idx)=>{
+    const gg=GESTES[idx];
+    t.style.background=idx===i?gg.c+'18':'var(--glass-card)';
+    t.style.borderColor=idx===i?gg.c+'88':'var(--border)';
+    t.style.color=idx===i?gg.c:'var(--txt-m)';
   });
 }
+function speakGeste(){speak(GESTES[gIdx].tts,'fr-FR');}
 
-// ── TTS ───────────────────────────────────────────────────────────────────────
-function speak(text, lang='fr-FR') {
-  if(!('speechSynthesis' in window)) return alert('La voix synthétique n\'est pas disponible dans ce navigateur.');
-  window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = lang; utt.rate = 0.88; utt.pitch = 0.95; utt.volume = 0.9;
-  const voices = window.speechSynthesis.getVoices();
-  const pref = voices.find(v=>v.lang.startsWith(lang.split('-')[0]));
-  if(pref) utt.voice = pref;
-  utt.onstart = ()=>showBar('Voix guidée','Cours audio en lecture...',true);
-  utt.onend = ()=>hideBar();
-  window.speechSynthesis.speak(utt);
+// ════════════════════════════════════════════════════════════════
+// PILIERS AUDIO
+// ════════════════════════════════════════════════════════════════
+const PILIERS_TTS=[
+  'La Shahada est la profession de foi. C est le premier pilier de l Islam. Attester qu il n y a de dieu qu Allah, et que Muhammad est Son messager.',
+  'La Salat est la prière rituelle. Elle est obligatoire cinq fois par jour. C est le deuxième pilier et le lien direct entre le croyant et son Seigneur.',
+  'La Zakat est l aumône purificatrice. Elle représente 2,5 pourcent des économies annuelles, distribuée aux nécessiteux. Elle purifie la richesse et l âme.',
+  'Le Siyam est le jeûne du mois de Ramadan. On s abstient de manger, boire et des désirs, de l aube au coucher du soleil. C est un mois de purification et de rapprochement vers Allah.',
+  'Le Hajj est le pèlerinage à La Mecque. Il est obligatoire une fois dans la vie pour celui qui en a les moyens. C est la rencontre de la communauté musulmane mondiale face à Allah.',
+];
+function speakPilier(n){speak(PILIERS_TTS[n-1],'fr-FR');}
+
+// ════════════════════════════════════════════════════════════════
+// PRAYER DASHBOARD
+// ════════════════════════════════════════════════════════════════
+function renderPrayers(){
+  document.getElementById('prayer-grid').innerHTML=PRAYERS.map(p=>`
+    <div class="glass-card prayer-card" id="pc-${p.id}" onclick="selectPrayer('${p.id}')">
+      <div class="prayer-ico">${p.ico}</div>
+      <div class="prayer-name">${p.n}</div>
+      <div class="prayer-time" style="font-size:10px;color:var(--txt-m)">${p.time}</div>
+      <span class="prayer-rakat chip" style="background:${p.gc},.12);color:${p.c};border:.5px solid ${p.gc},.3)">${p.rakat} rak'at</span>
+    </div>`).join('');
+}
+function selectPrayer(id){
+  selectedPrayer=PRAYERS.find(p=>p.id===id);
+  document.querySelectorAll('.prayer-card').forEach(c=>{c.classList.remove('selected');c.style.borderColor='';c.style.boxShadow='';});
+  const el=document.getElementById('pc-'+id);
+  el.classList.add('selected');
+  el.style.borderColor=selectedPrayer.c+'66';
+  el.style.boxShadow=`0 8px 30px ${selectedPrayer.gc},.3)`;
+  document.getElementById('prayer-info-box').style.display='block';
+  document.getElementById('prayer-info-text').innerHTML=`<strong style="color:white">${selectedPrayer.n}</strong> — ${selectedPrayer.rakat} rak'at · ${selectedPrayer.time}. Tu vas être guidé étape par étape avec une voix calme et pédagogique.`;
+  const btn=document.getElementById('btn-to-checklist');
+  btn.className='launch-btn ready';
+  btn.style.background=`linear-gradient(135deg,${selectedPrayer.c},var(--emerald))`;
+}
+function gotoChecklist(){
+  if(!selectedPrayer) return;
+  checksDone=[false,false,false,false];
+  document.querySelectorAll('.check-item').forEach(i=>i.classList.remove('checked'));
+  document.querySelectorAll('.check-box').forEach(b=>{b.textContent='';b.style.background='';b.style.borderColor='';});
+  document.getElementById('check-prayer-label').textContent=`${selectedPrayer.n} · ${selectedPrayer.rakat} Rak'at`;
+  document.getElementById('launch-btn').className='launch-btn disabled';
+  updateCheckProg();
+  go('app-checklist');
 }
 
-// ── DHIKR ─────────────────────────────────────────────────────────────────────
-function initDhikr() {
-  renderDhikr();
+// ════════════════════════════════════════════════════════════════
+// CHECKLIST
+// ════════════════════════════════════════════════════════════════
+function toggleCheck(el,i){
+  checksDone[i]=!checksDone[i];
+  el.classList.toggle('checked',checksDone[i]);
+  const box=document.getElementById('cb'+i);
+  if(checksDone[i]){box.textContent='✓';box.style.background='var(--emerald)';box.style.borderColor='var(--emerald)';}
+  else{box.textContent='';box.style.background='';box.style.borderColor='';}
+  updateCheckProg();
+}
+function updateCheckProg(){
+  const done=checksDone.filter(Boolean).length;
+  document.getElementById('check-prog-fill').style.width=(done/4*100)+'%';
+  document.getElementById('check-prog-text').textContent=done+'/4';
+  const btn=document.getElementById('launch-btn');
+  const allDone=done===4;
+  btn.className='launch-btn '+(allDone?'ready':'disabled');
+  if(allDone){btn.style.background=`linear-gradient(135deg,${selectedPrayer.c},var(--emerald))`;}
+}
+
+// ════════════════════════════════════════════════════════════════
+// PRAYER PLAYER
+// ════════════════════════════════════════════════════════════════
+function launchPrayer(){
+  if(checksDone.filter(Boolean).length<4)return;
+  pSteps=selectedPrayer.steps; pStep=0; pRakat=0; pPlaying=false;
+  document.getElementById('prayer-now-label').textContent=`${selectedPrayer.n} · ${selectedPrayer.rakat} Rak'at`;
+  document.getElementById('rakat-total').textContent=selectedPrayer.rakat;
+  document.getElementById('rakat-done').innerHTML=`0 <span style="font-size:16px;color:var(--txt-d)">/ ${selectedPrayer.rakat}</span>`;
+  document.getElementById('prayer-fill').style.background=`linear-gradient(90deg,${selectedPrayer.c},var(--emerald))`;
+  updatePrayerStep();
+  go('app-prayer');
+  setTimeout(()=>playStep(),600);
+}
+function updatePrayerStep(){
+  if(pStep>=pSteps.length)return;
+  const s=pSteps[pStep];
+  document.getElementById('pn-title').textContent=s.t;
+  document.getElementById('pn-sub').textContent=s.s;
+  document.getElementById('pn-stepn').textContent=pStep+1;
+  document.getElementById('pn-steptot').textContent=pSteps.length;
+  document.getElementById('prayer-fill').style.width=((pStep+1)/pSteps.length*100)+'%';
+}
+function playStep(){
+  if(pStep>=pSteps.length){endPrayer();return;}
+  pPlaying=true;
+  document.getElementById('pn-play').textContent='⏸';
+  document.getElementById('waveform').style.display='flex';
+  showBar('Prière guidée',`${selectedPrayer.n} · ${pSteps[pStep].t}`);
+  speak(pSteps[pStep].tts,'fr-FR',()=>{
+    pPlaying=false;
+    document.getElementById('pn-play').textContent='▶';
+    document.getElementById('waveform').style.display='none';
+  });
+}
+function togglePrayer(){
+  if(pPlaying){window.speechSynthesis.pause();pPlaying=false;document.getElementById('pn-play').textContent='▶';document.getElementById('waveform').style.display='none';}
+  else{if(window.speechSynthesis.paused){window.speechSynthesis.resume();pPlaying=true;document.getElementById('pn-play').textContent='⏸';document.getElementById('waveform').style.display='flex';}else{playStep();}}
+}
+function nextStep(){pStep=Math.min(pStep+1,pSteps.length-1);updatePrayerStep();window.speechSynthesis.cancel();setTimeout(()=>playStep(),400);}
+function prevStep(){pStep=Math.max(pStep-1,0);updatePrayerStep();window.speechSynthesis.cancel();setTimeout(()=>playStep(),400);}
+function addRakat(){
+  pRakat=Math.min(pRakat+1,selectedPrayer.rakat);
+  document.getElementById('rakat-done').innerHTML=`${pRakat} <span style="font-size:16px;color:var(--txt-d)">/ ${selectedPrayer.rakat}</span>`;
+}
+function endPrayer(){
+  window.speechSynthesis.cancel();pPlaying=false;
+  totalPrayersDone++;
+  document.getElementById('bilan-prayer-name').textContent=selectedPrayer.n;
+  document.getElementById('bilan-rakat').textContent=pRakat;
+  document.getElementById('bilan-session').textContent=totalPrayersDone;
+  document.getElementById('total-prayers-done').textContent=totalPrayersDone;
+  document.getElementById('review-section').style.display='none';
+  document.getElementById('review-thanks').style.display='none';
+  renderReviews();
+  go('app-bilan');
+  speak(`Alhamdulillah ! Tu as accompli ta prière de ${selectedPrayer.n}. Qu Allah l accepte de toi et te récompense abondamment.`,'fr-FR');
+}
+
+// ════════════════════════════════════════════════════════════════
+// BILAN
+// ════════════════════════════════════════════════════════════════
+function bilanOui(){
+  markStep(3);
+  document.getElementById('review-section').style.display='block';
+  speak('Qu Allah accepte ta prière et te rapproche de Lui. N oublie pas le Dhikr après la prière.','fr-FR');
+}
+function bilanNon(){
+  go('app-dashboard');
+}
+
+// ════════════════════════════════════════════════════════════════
+// REVIEWS
+// ════════════════════════════════════════════════════════════════
+const initReviews=[
+  {name:'Fatima B.',stars:5,text:'Mon fils a appris sa prière en 3 jours grâce à cette app. Barak Allah oufik !'},
+  {name:'Youssef M.',stars:5,text:'Le design est magnifique, la voix est apaisante. J\'utilise le Dhikr chaque soir.'},
+  {name:'Karim D.',stars:4,text:'Enfin une application sérieuse et belle. Je recommande à tous ceux qui veulent (re)apprendre.'},
+];
+function setStars(n){reviewStars=n;document.querySelectorAll('.review-star').forEach((s,i)=>{s.classList.toggle('lit',i<n);});}
+function submitReview(){
+  const text=document.getElementById('review-text').value.trim();
+  const name=document.getElementById('review-name').value.trim()||'Utilisateur anonyme';
+  if(!text){document.getElementById('review-text').style.borderColor='rgba(244,63,94,.5)';return;}
+  reviews.unshift({name,stars:reviewStars,text});
+  document.getElementById('review-section').style.display='none';
+  document.getElementById('review-thanks').style.display='block';
+  renderReviews();
+}
+function renderReviews(){
+  const all=[...reviews,...initReviews];
+  document.getElementById('reviews-list').innerHTML=all.slice(0,5).map(r=>`
+    <div class="review-item">
+      <div class="ri-header"><span class="ri-name">${r.name}</span><span class="ri-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</span></div>
+      <p class="ri-text">« ${r.text} »</p>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════════════════════════
+// DHIKR COUNTER
+// ════════════════════════════════════════════════════════════════
+function renderDhikr(){
+  const d=DHIKR[dIdx];
+  document.getElementById('d-arabic').textContent=d.ar;
+  document.getElementById('d-arabic').style.color=d.tc;
+  document.getElementById('d-translit').textContent=d.tr;
+  document.getElementById('d-trans').textContent=d.trs;
+  document.getElementById('d-virtue').textContent=d.v;
+  document.getElementById('d-target').textContent=d.n;
+  document.getElementById('d-done').style.display='none';
+  document.getElementById('rg2s1').setAttribute('stop-color',d.c[0]);
+  document.getElementById('rg2s2').setAttribute('stop-color',d.c[1]);
+  document.getElementById('d-tap-btn').style.borderColor=d.bc;
   renderDhikrList();
+  updD();
 }
-
-function renderDhikr() {
-  const d = DHIKR[dhikrIdx];
-  document.getElementById('dhikr-arabic').textContent = d.arabic;
-  document.getElementById('dhikr-translit').textContent = d.translit;
-  document.getElementById('dhikr-trans').textContent = d.trans;
-  document.getElementById('dhikr-virtue').textContent = d.virtue;
-  document.getElementById('dhikr-target-display').textContent = '/ '+d.target;
-  document.getElementById('done-msg').style.display = 'none';
-  document.getElementById('dhikr-arabic').style.color = d.text;
-  document.getElementById('rg-s1').setAttribute('stop-color', d.color[0]);
-  document.getElementById('rg-s2').setAttribute('stop-color', d.color[1]);
-  document.getElementById('tap-btn').style.borderColor = d.border;
-  updateRing();
-  highlightList();
-}
-
-function renderDhikrList() {
-  const el = document.getElementById('dhikr-list');
-  el.innerHTML = DHIKR.map((d,i)=>`
-    <button class="dhikr-list-item" onclick="jumpDhikr(${i})" id="dli-${i}">
+function renderDhikrList(){
+  document.getElementById('d-list').innerHTML=DHIKR.map((d,i)=>`
+    <button onclick="jD(${i})" style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:14px;border:.5px solid ${i===dIdx?d.bc:'var(--border)'};background:${i===dIdx?d.bg:'transparent'};cursor:pointer;width:100%;font-family:'Sora',sans-serif;text-align:left;transition:all .2s" id="dli${i}">
       <div>
-        <p class="arabic" style="font-size:15px;color:${d.text}">${d.arabic}</p>
-        <p style="font-size:10px;color:var(--text-muted);margin-top:2px">${d.translit} · ×${d.target}</p>
+        <p class="arabic" style="font-size:14px;color:${d.tc}">${d.ar}</p>
+        <p style="font-size:9px;color:var(--txt-m);margin-top:2px">${d.tr} · ×${d.n}</p>
       </div>
-      <span class="badge" style="background:${d.bg};color:${d.text};border:.5px solid ${d.border}">TTS</span>
+      <span style="font-size:9px;padding:3px 8px;border-radius:8px;background:${d.bg};color:${d.tc};border:.5px solid ${d.bc}">TTS</span>
     </button>`).join('');
 }
+function updD(){
+  const d=DHIKR[dIdx];
+  const p=Math.min(dCount/d.n,1);
+  document.getElementById('d-ring').style.strokeDashoffset=339.3*(1-p);
+  document.getElementById('d-count').textContent=dCount;
+}
+function tapDhikr(){
+  const d=DHIKR[dIdx];
+  if(dCount>=d.n)return;
+  dCount++;
+  if(dCount%5===0||dCount===1)speakDhikrAr();
+  if(dCount>=d.n){dSessions++;document.getElementById('d-sessions').textContent=dSessions;document.getElementById('d-done').style.display='block';}
+  updD();
+}
+function speakDhikrAr(){speak(DHIKR[dIdx].tts,'ar-SA');}
+function resetD(){dCount=0;document.getElementById('d-done').style.display='none';updD();}
+function chD(dir){dIdx=(dIdx+dir+DHIKR.length)%DHIKR.length;dCount=0;renderDhikr();}
+function jD(i){dIdx=i;dCount=0;renderDhikr();}
 
-function highlightList() {
-  DHIKR.forEach((_,i)=>{
-    const el = document.getElementById('dli-'+i);
-    if(!el) return;
-    const d = DHIKR[i];
-    el.style.background = i===dhikrIdx ? d.bg : 'transparent';
-    el.style.borderColor = i===dhikrIdx ? d.border : 'var(--glass-border)';
+function switchDhikrTab(tab,btn){
+  document.getElementById('dhikr-tab-compteur').style.display=tab==='compteur'?'block':'none';
+  document.getElementById('dhikr-tab-invocations').style.display=tab==='invocations'?'block':'none';
+  document.querySelectorAll('[id^=dtab]').forEach(b=>{b.style.background='transparent';b.style.borderColor='transparent';b.style.color='var(--txt-m)';});
+  btn.style.background='var(--glass-card)';btn.style.borderColor='var(--border)';btn.style.color='var(--txt)';
+}
+
+// ════════════════════════════════════════════════════════════════
+// LONG AUDIO PLAYERS
+// ════════════════════════════════════════════════════════════════
+function fmt(s){const m=Math.floor(s/60),sec=Math.floor(s%60).toString().padStart(2,'0');return`${m}:${sec}`;}
+function loadLongAudio(id,inp){
+  const file=inp.files[0]; if(!file)return;
+  const url=URL.createObjectURL(file);
+  const audio=document.getElementById('lpa-'+id);
+  audio.src=url; audio.load();
+  document.getElementById('ph-'+id).style.display='none';
+  document.getElementById('lp-'+id).style.display='block';
+  audio.addEventListener('loadedmetadata',()=>{document.getElementById('lpd-'+id).textContent=fmt(audio.duration);});
+  audio.addEventListener('timeupdate',()=>{if(!audio.duration)return;document.getElementById('lpf-'+id).style.width=(audio.currentTime/audio.duration*100)+'%';document.getElementById('lpt-'+id).textContent=fmt(audio.currentTime);});
+  audio.addEventListener('ended',()=>{document.getElementById('lpb-'+id).textContent='▶';hideBar();});
+  audio.dataset.name=file.name.replace(/\.[^.]+$/,'');
+}
+function toggleLP(id){
+  const audio=document.getElementById('lpa-'+id);
+  const btn=document.getElementById('lpb-'+id);
+  ['matin','soir'].forEach(k=>{if(k!==id){const a=document.getElementById('lpa-'+k);if(!a.paused){a.pause();document.getElementById('lpb-'+k).textContent='▶';}}});
+  if(audio.paused){audio.play();btn.textContent='⏸';showBar('Omar Isham',audio.dataset.name||'Invocations');}
+  else{audio.pause();btn.textContent='▶';hideBar();}
+}
+function seekLP(id,e){const audio=document.getElementById('lpa-'+id);if(!audio.duration)return;const bar=document.getElementById('lp-'+id).querySelector('.prog-wrap');const r=(e.clientX-bar.getBoundingClientRect().left)/bar.offsetWidth;audio.currentTime=r*audio.duration;}
+function skipLP(id,s){const audio=document.getElementById('lpa-'+id);audio.currentTime=Math.max(0,Math.min(audio.duration||0,audio.currentTime+s));}
+
+// ════════════════════════════════════════════════════════════════
+// AUDIO BAR
+// ════════════════════════════════════════════════════════════════
+function showBar(lbl,ttl){document.getElementById('ab-lbl').textContent=lbl;document.getElementById('ab-ttl').textContent=ttl;document.getElementById('audio-bar').classList.add('show');}
+function hideBar(){document.getElementById('audio-bar').classList.remove('show');}
+
+// ════════════════════════════════════════════════════════════════
+// PARCOURS STEPS
+// ════════════════════════════════════════════════════════════════
+function markStep(i){stepsCompleted[i]=true;const el=document.getElementById('step'+i);if(el)el.classList.add('done');}
+
+// ════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════
+window.onload=()=>{
+  if('speechSynthesis' in window)window.speechSynthesis.getVoices();
+  renderWudu();
+  renderGesteTabs();
+  showG(0,null);
+  renderPrayers();
+  renderDhikr();
+  renderReviews();
+
+  // Drag & drop invocations
+  ['matin','soir'].forEach(id=>{
+    const ph=document.getElementById('ph-'+id);
+    ph.addEventListener('dragover',e=>{e.preventDefault();ph.style.outline='2px dashed var(--emerald)';});
+    ph.addEventListener('dragleave',()=>ph.style.outline='');
+    ph.addEventListener('drop',e=>{e.preventDefault();ph.style.outline='';const f=e.dataTransfer.files[0];if(f){const inp=document.getElementById('fi-'+id);const dt=new DataTransfer();dt.items.add(f);inp.files=dt.files;loadLongAudio(id,inp);}});
   });
-}
-
-function updateRing() {
-  const d = DHIKR[dhikrIdx];
-  const circ = 339.3;
-  const p = Math.min(count/d.target,1);
-  document.getElementById('ring-circle').style.strokeDashoffset = circ*(1-p);
-  document.getElementById('dhikr-count').textContent = count;
-}
-
-function tap() {
-  const d = DHIKR[dhikrIdx];
-  if(count >= d.target) return;
-  count++;
-  if(count%5===0||count===1) speakDhikr();
-  if(count>=d.target){ sessions++; document.getElementById('sessions-count').textContent=sessions; document.getElementById('done-msg').style.display='block'; }
-  updateRing();
-}
-
-function speakDhikr() {
-  const d = DHIKR[dhikrIdx];
-  speak(d.tts,'ar-SA');
-}
-
-function resetCount(){ count=0; document.getElementById('done-msg').style.display='none'; updateRing(); }
-function changeDhikr(dir){ dhikrIdx=(dhikrIdx+dir+DHIKR.length)%DHIKR.length; count=0; renderDhikr(); }
-function jumpDhikr(i){ dhikrIdx=i; count=0; renderDhikr(); }
-
-// ── GESTES ────────────────────────────────────────────────────────────────────
-function showGeste(i, btn) {
-  currentGeste = i;
-  const g = GESTES[i];
-  document.getElementById('geste-symbol').textContent = g.sym;
-  document.getElementById('geste-symbol').style.color = g.color;
-  document.getElementById('geste-name').textContent = g.name;
-  document.getElementById('geste-sub').textContent = g.sub;
-  document.getElementById('geste-sub').style.color = g.color;
-  document.getElementById('geste-desc').textContent = g.desc;
-  document.querySelectorAll('.geste-tab').forEach((t,idx)=>{
-    t.classList.toggle('active',idx===i);
-    t.style.borderColor = idx===i ? g.color+'88' : 'var(--glass-border)';
-    t.style.color = idx===i ? g.color : 'var(--text-muted)';
-    t.style.background = idx===i ? g.color+'18' : 'var(--glass-card)';
-  });
-}
-function speakGeste(){ speak(GESTES[currentGeste].tts,'fr-FR'); }
-
-// ── DHIKR TABS ────────────────────────────────────────────────────────────────
-function showDhikrTab(tab, btn) {
-  document.getElementById('tab-invocations').style.display = tab==='invocations'?'block':'none';
-  document.getElementById('tab-compteur').style.display = tab==='compteur'?'block':'none';
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
-// ── AUDIO PLAYERS (drag & drop / file picker) ──────────────────────────────
-function loadFile(id, input) {
-  const file = input.files[0];
-  if(!file) return;
-  const url = URL.createObjectURL(file);
-  const audio = audios[id];
-  audio.src = url;
-  audio.load();
-  document.getElementById('placeholder-'+id).style.display='none';
-  document.getElementById('player-'+id).style.display='block';
-  const fmt = s=>{ const m=Math.floor(s/60),sec=Math.floor(s%60).toString().padStart(2,'0'); return `${m}:${sec}`; };
-  audio.addEventListener('loadedmetadata',()=>{ document.getElementById('time-tot-'+id).textContent=fmt(audio.duration); });
-  audio.addEventListener('timeupdate',()=>{
-    if(!audio.duration) return;
-    const p = audio.currentTime/audio.duration;
-    document.getElementById('prog-fill-'+id).style.width=(p*100)+'%';
-    document.getElementById('time-cur-'+id).textContent=fmt(audio.currentTime);
-  });
-  audio.addEventListener('ended',()=>{ document.getElementById('play-btn-'+id).textContent='▶'; hideBar(); });
-  // Show name in bar
-  audio.dataset.name = file.name.replace(/\.[^.]+$/,'');
-}
-
-function toggleAudio(id) {
-  const audio = audios[id];
-  const btn = document.getElementById('play-btn-'+id);
-  // Pause the other
-  Object.entries(audios).forEach(([k,a])=>{ if(k!==id&&!a.paused){ a.pause(); document.getElementById('play-btn-'+k).textContent='▶'; } });
-  if(audio.paused){ audio.play(); btn.textContent='⏸'; showBar('En lecture', audio.dataset.name||'Récitation Omar Isham', true); }
-  else { audio.pause(); btn.textContent='▶'; hideBar(); }
-}
-
-function seekAudio(id, e) {
-  const audio = audios[id];
-  if(!audio.duration) return;
-  const bar = document.getElementById('prog-bar-'+id);
-  const ratio = (e.clientX-bar.getBoundingClientRect().left)/bar.offsetWidth;
-  audio.currentTime = ratio * audio.duration;
-}
-
-function skipAudio(id, sec) {
-  const audio = audios[id];
-  audio.currentTime = Math.max(0,Math.min(audio.duration||0, audio.currentTime+sec));
-}
-
-function setVol(id, v) { audios[id].volume = v; }
-
-function stopAll() {
-  Object.entries(audios).forEach(([k,a])=>{ a.pause(); document.getElementById('play-btn-'+k).textContent='▶'; });
-  window.speechSynthesis&&window.speechSynthesis.cancel();
-  hideBar();
-}
-
-// Drag & drop sur les placeholders
-['matin','soir'].forEach(id=>{
-  const ph = document.getElementById('placeholder-'+id);
-  ph.addEventListener('dragover',e=>{e.preventDefault();ph.style.borderColor='var(--emerald)';});
-  ph.addEventListener('dragleave',()=>{ph.style.borderColor='rgba(245,158,11,.3)';});
-  ph.addEventListener('drop',e=>{
-    e.preventDefault(); ph.style.borderColor='';
-    const file = e.dataTransfer.files[0];
-    if(file){ const inp=document.getElementById('file-'+id); const dt=new DataTransfer(); dt.items.add(file); inp.files=dt.files; loadFile(id,inp); }
-  });
-});
-
-// ── AUDIO BAR ──────────────────────────────────────────────────────────────────
-function showBar(label,title,wave=false) {
-  document.getElementById('bar-label').textContent=label;
-  document.getElementById('bar-title').textContent=title;
-  document.getElementById('bar-wave').style.display=wave?'flex':'none';
-  document.getElementById('audio-bar').classList.add('visible');
-}
-function hideBar(){ document.getElementById('audio-bar').classList.remove('visible'); }
-
-// ── INIT ──────────────────────────────────────────────────────────────────────
-window.onload = ()=>{
-  initDhikr();
-  showGeste(0, document.querySelector('.geste-tab'));
-  // Preload voices
-  if('speechSynthesis' in window) window.speechSynthesis.getVoices();
 };
 </script>
 </body>
